@@ -1,3 +1,5 @@
+package projet_po2;
+
 import javax.swing.event.EventListenerList;
 
 public class AutreEventNotifieur {

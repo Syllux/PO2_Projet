@@ -1,3 +1,5 @@
+package projet_po2;
+
 import java.util.EventObject;
 
 public class AutreEvent extends EventObject {

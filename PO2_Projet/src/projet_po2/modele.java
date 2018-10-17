@@ -14,18 +14,33 @@ import java.util.LinkedList;
  */
 public class modele {
 
-    private List<Paire<Integer>> ListForme = new LinkedList<>();
+    private List<Forme> ListForme = new LinkedList<>();
     private AutreEventNotifieur notifieur = new AutreEventNotifieur();
-	public void addPoint(Paire<Integer> point) {
-		listePoints.add(point);                   System.out.println("modele notifie");
-		notifieur.diffuserAutreEvent(new AutreEvent(this, listePoints));
+	public void addRectangle(Forme forme) {
+		ListForme.add(forme);                  
+                System.out.println("modele notifie");
+		notifieur.diffuserAutreEvent(new AutreEvent(this, ListForme));
 	}
-	public void removePoint(int position) {
-		if ((position >= 0) && (position <= listePoints.size()-1)) {
-			listePoints.remove(position);              System.out.println("modele notifie");
-			notifieur.diffuserAutreEvent(new AutreEvent(this, listePoints));
+        
+        public void addLigneBrisee(Forme forme) {
+		ListForme.add(forme);                  
+                System.out.println("modele notifie");
+		notifieur.diffuserAutreEvent(new AutreEvent(this, ListForme));
+	}
+        
+        
+	public void removeForme(int position) {
+		if ((position >= 0) && (position <= ListForme.size()-1)) {
+			ListForme.remove(position);            
+                        System.out.println("modele notifie");
+			notifieur.diffuserAutreEvent(new AutreEvent(this, ListForme));
 		}		
 	}
+        
+        public void setColor()
+    
+        
+        
 	public void addAutreEventListener(AutreEventListener listener) {
 	    notifieur.addAutreEventListener(listener);
 	}
