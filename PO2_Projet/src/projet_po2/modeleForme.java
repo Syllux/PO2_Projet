@@ -12,21 +12,26 @@ import java.util.LinkedList;
  *
  * @author alex8
  */
-public class modele {
+public class modeleForme {
 
     private List<Forme> ListForme = new LinkedList<>();
     private AutreEventNotifieur notifieur = new AutreEventNotifieur();
-	public void addRectangle(Forme forme) {
+    public void addForme(Forme forme) {
 		ListForme.add(forme);                  
                 System.out.println("modele notifie");
 		notifieur.diffuserAutreEvent(new AutreEvent(this, ListForme));
-	}
-        
-        public void addLigneBrisee(Forme forme) {
-		ListForme.add(forme);                  
-                System.out.println("modele notifie");
-		notifieur.diffuserAutreEvent(new AutreEvent(this, ListForme));
-	}
+    }
+//	public void addRectangle(Forme forme) {
+//		ListForme.add(forme);                  
+//                System.out.println("modele notifie");
+//		notifieur.diffuserAutreEvent(new AutreEvent(this, ListForme));
+//	}
+//        
+//        public void addLigneBrisee(Forme forme) {
+//		ListForme.add(forme);                  
+//                System.out.println("modele notifie");
+//		notifieur.diffuserAutreEvent(new AutreEvent(this, ListForme));
+//	}
         
         
 	public void removeForme(int position) {
@@ -37,7 +42,7 @@ public class modele {
 		}		
 	}
         
-        public void setColor()
+       // public void setColor();
     
         
         

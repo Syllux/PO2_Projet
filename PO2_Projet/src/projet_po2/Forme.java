@@ -14,7 +14,13 @@ import java.util.List;
  */
 public class Forme {
     
-    private boolean typeForme;
+    private String typeForme;
     private List<Paire<Integer>> listePoints = new ArrayList<>();
+    
+    public Forme(List<Paire<Integer>> liste, String type){
+        this.listePoints=liste;
+        this.typeForme=type;
+        
+    }
     
 }
