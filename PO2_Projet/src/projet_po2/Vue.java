@@ -1,31 +1,16 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package projet_po2;
 
-
+import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.BorderFactory;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.ButtonGroup;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.JPanel;
-import javax.swing.JRadioButton;
-import javax.swing.JTextField;
-import javax.swing.JToggleButton;
+import javax.swing.*;
 
-public class Vue extends Box implements AutreEventListener {
+// Vue projet
+public class Vue extends JPanel implements AutreEventListener {
 
     private modeleForme modele;
     private controleurForme controleur;
@@ -38,54 +23,49 @@ public class Vue extends Box implements AutreEventListener {
 //    private JToggleButton ligneBrisee, rectangle;
 
     public Vue(modeleForme modele, controleurForme controleur) {
-        super(BoxLayout.X_AXIS);
+
         this.modele = modele;
         modele.addAutreEventListener(this);
         this.controleur = controleur;
         this.addAutreEventListener(controleur);
-
-        Box boiteGauche = new Box(BoxLayout.Y_AXIS);
-        JPanel bg = new JPanel();
-        bg.add(boiteGauche);
-        this.add(bg);
+        this.setLayout(new BorderLayout());
+        
+        // Zone de dessin
+        JPanel PanelZoneDessin = new JPanel();
         zoneDessin = new Dessin();
         zoneDessin.setOpaque(true);
-        zoneDessin.setPreferredSize(new Dimension(400, 400));
+        zoneDessin.setPreferredSize(new Dimension(600, 400));
         zoneDessin.setBorder(BorderFactory.createEtchedBorder());
-        this.add(zoneDessin);
+        PanelZoneDessin.add(zoneDessin);
+        this.add(PanelZoneDessin, BorderLayout.WEST);
        
-        boiteGauche.add(Box.createGlue());
-        Box boite = new Box(BoxLayout.X_AXIS);
-        boiteGauche.add(boite);
+        // Panel Barre d'outils
+        JPanel PanelBarreOutils = new JPanel();
+        PanelBarreOutils.setLayout(new BorderLayout());
+        PanelBarreOutils.setBorder(BorderFactory.createTitledBorder("Barre d'outils"));
+        this.add(PanelBarreOutils, BorderLayout.NORTH);
+        // Box contenant le choix des formes
+        Box ChoixForme = new Box(BoxLayout.X_AXIS);
+        PanelBarreOutils.add(ChoixForme, BorderLayout.NORTH);
         selectionTypeForme = new ButtonGroup();
         rectangle = new JRadioButton("Rectangle");
         selectionTypeForme.add(rectangle);
         ligneBrisee= new JRadioButton("Ligne Brisée");
         selectionTypeForme.add(ligneBrisee);
-        boite.add(rectangle);
-        boite.add(ligneBrisee);
-        
-//        ligneBrisee = new JToggleButton("Ligne Brisée");
-//        boite.add(ligneBrisee);
-//        
-//        boite = new Box(BoxLayout.X_AXIS);
-//        boiteGauche.add(boite);
-//        rectangle = new JToggleButton("Rectangle");
-//        boite.add(rectangle);
-        
-        
-        boite = new Box(BoxLayout.X_AXIS);
-        boiteGauche.add(boite);
-        boite.add(new JLabel("X : "));
-        x = new JTextField(" ");
-        boite.add(x);
-        boite = new Box(BoxLayout.X_AXIS);
-        boiteGauche.add(boite);
-        boite.add(new JLabel("Y : "));
-        y = new JTextField(" ");
-        boite.add(y);
+        ChoixForme.add(rectangle);
+        ChoixForme.add(ligneBrisee);
+                ChoixForme = new Box(BoxLayout.X_AXIS);
+        // Boxe pour les coordonnées
+        Box ChoixCoordonnees = new Box(BoxLayout.X_AXIS);
+        PanelBarreOutils.add(ChoixCoordonnees, BorderLayout.SOUTH);
+        ChoixCoordonnees.add(new JLabel("X : "));
+        x = new JTextField(5);
+        ChoixCoordonnees.add(x);
+        ChoixCoordonnees.add(new JLabel("Y : "));
+        y = new JTextField(5);
+        ChoixCoordonnees.add(y);
         JButton bouton = new JButton("add");
-        boiteGauche.add(bouton);
+        ChoixCoordonnees.add(bouton);
         bouton.addActionListener((ActionEvent ae) -> {
             try {
                 int valx = Integer.parseInt(x.getText().trim());
@@ -99,12 +79,19 @@ public class Vue extends Box implements AutreEventListener {
             }
         });
         
-        boiteGauche.add(Box.createGlue());
-        boiteGauche.add(new JLabel(" "));
+        // ChoixCoordonnees.add(Box.createGlue());
+        ChoixCoordonnees.add(new JLabel(" "));
         choixPoints = new JList<String>();
-        boiteGauche.add(choixPoints);
+        ChoixCoordonnees.add(choixPoints);
         bouton = new JButton("del");
-        boiteGauche.add(bouton);
+        ChoixCoordonnees.add(bouton);
+        
+//        ligneBrisee = new JToggleButton("Ligne Brisée");
+//        boite.add(ligneBrisee);
+//        boite = new Box(BoxLayout.X_AXIS);
+//        boiteGauche.add(boite);
+//        rectangle = new JToggleButton("Rectangle");
+//        boite.add(rectangle);
         
         
     }

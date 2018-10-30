@@ -6,6 +6,7 @@
 package projet_po2;
 import javax.swing.JFrame;
 
+// Classe Main
 public class Projet_PO2 extends JFrame {
 
 	public Projet_PO2() {
