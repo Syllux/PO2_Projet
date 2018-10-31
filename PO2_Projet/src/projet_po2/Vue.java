@@ -16,7 +16,7 @@ public class Vue extends JPanel implements AutreEventListener {
     private controleurForme controleur;
     private AutreEventNotifieur notifieur = new AutreEventNotifieur();
     private JList<String> choixPoints;
-    private JTextField x, y, largeur, hauteur;
+    private JTextField x1, y1, x2, y2;
     private Dessin zoneDessin;
     private JRadioButton ligneBrisee, rectangle;
     private ButtonGroup selectionTypeForme;
@@ -34,7 +34,7 @@ public class Vue extends JPanel implements AutreEventListener {
         JPanel PanelZoneDessin = new JPanel();
         zoneDessin = new Dessin();
         zoneDessin.setOpaque(true);
-        zoneDessin.setPreferredSize(new Dimension(600, 400));
+        zoneDessin.setPreferredSize(new Dimension(400, 200));
         zoneDessin.setBorder(BorderFactory.createLoweredBevelBorder());
         PanelZoneDessin.add(zoneDessin);
         this.add(PanelZoneDessin, BorderLayout.WEST);
@@ -58,24 +58,21 @@ public class Vue extends JPanel implements AutreEventListener {
         JPanel ChoixCoordonnees = new JPanel();
         ChoixCoordonnees.setLayout(new BorderLayout());
         PanelBarreOutils.add(ChoixCoordonnees, BorderLayout.SOUTH);
-        //  Panel pour x et y
+        //  Panel pour les x et y
         JPanel PanelXY = new JPanel();
-        PanelXY.add(new JLabel("X : "));
-        x = new JTextField(5);
-        PanelXY.add(x);
-        PanelXY.add(new JLabel("Y : "));
-        y = new JTextField(5);
-        PanelXY.add(y);
-        ChoixCoordonnees.add(PanelXY, BorderLayout.WEST);
-        //Panel longueur - largeur
-        JPanel PanelDimension = new JPanel();
-        PanelDimension.add(new JLabel("Largeur : "));
-        largeur = new JTextField(5);
-        PanelDimension.add(largeur);
-        PanelDimension.add(new JLabel ("Hauteur : "));
-        hauteur = new JTextField(5);
-        PanelDimension.add(hauteur);
-        ChoixCoordonnees.add(PanelDimension, BorderLayout.CENTER);
+        PanelXY.add(new JLabel("X1 : "));
+        x1 = new JTextField(5);
+        PanelXY.add(x1);
+        PanelXY.add(new JLabel("Y1 : "));
+        y1 = new JTextField(5);
+        PanelXY.add(y1);
+        ChoixCoordonnees.add(PanelXY, BorderLayout.CENTER);
+        PanelXY.add(new JLabel("X2 : "));
+        x2 = new JTextField(5);
+        PanelXY.add(x2);
+        PanelXY.add(new JLabel ("Y2 : "));
+        y2 = new JTextField(5);
+        PanelXY.add(y2);
         // Panel bouton
         JPanel PanelAddDelete = new JPanel();
         JButton bouton = new JButton("add");
@@ -83,19 +80,19 @@ public class Vue extends JPanel implements AutreEventListener {
         ChoixCoordonnees.add(PanelAddDelete, BorderLayout.EAST);
         bouton.addActionListener((ActionEvent ae) -> {
             try {
-                int valx = Integer.parseInt(x.getText().trim());
-                int valy = Integer.parseInt(y.getText().trim());
+                int valx = Integer.parseInt(x1.getText().trim());
+                int valy = Integer.parseInt(y1.getText().trim());
                 System.out.println("vue add");
                 Paire x1y1 = new Paire(valx, valy);
-                Paire hauteurLargeur = new Paire (hauteur, largeur);
+                Paire hauteurLargeur = new Paire (x2, y2);
                 List<Paire<Integer>> listePoints = new ArrayList<>();
                 listePoints.add(x1y1);
                 listePoints.add(hauteurLargeur);
-                notifieur.diffuserAutreEvent(new AutreEvent(this, new List<Paire<Integer>>(valx, valy)));
+                //notifieur.diffuserAutreEvent(new AutreEvent(this, new List<Paire<Integer>>(valx, valy)));
             } catch (NumberFormatException nfe) {
             } finally {
-                x.setText(" ");
-                y.setText(" ");
+                x1.setText(" ");
+                y1.setText(" ");
             }
         });
         choixPoints = new JList<String>();
