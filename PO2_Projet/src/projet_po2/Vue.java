@@ -72,9 +72,9 @@ public class Vue extends JPanel implements AutreEventListener {
         PanelDimension.add(new JLabel("Largeur : "));
         largeur = new JTextField(5);
         PanelDimension.add(largeur);
-        PanelDimension.add(new JLabel ("Longueur : "));
-        largeur = new JTextField(5);
-        PanelDimension.add(largeur);
+        PanelDimension.add(new JLabel ("Hauteur : "));
+        hauteur = new JTextField(5);
+        PanelDimension.add(hauteur);
         ChoixCoordonnees.add(PanelDimension, BorderLayout.CENTER);
         // Panel bouton
         JPanel PanelAddDelete = new JPanel();
@@ -86,7 +86,12 @@ public class Vue extends JPanel implements AutreEventListener {
                 int valx = Integer.parseInt(x.getText().trim());
                 int valy = Integer.parseInt(y.getText().trim());
                 System.out.println("vue add");
-                notifieur.diffuserAutreEvent(new AutreEvent(this, new Paire<Integer>(valx, valy)));
+                Paire x1y1 = new Paire(valx, valy);
+                Paire hauteurLargeur = new Paire (hauteur, largeur);
+                List<Paire<Integer>> listePoints = new ArrayList<>();
+                listePoints.add(x1y1);
+                listePoints.add(hauteurLargeur);
+                notifieur.diffuserAutreEvent(new AutreEvent(this, new List<Paire<Integer>>(valx, valy)));
             } catch (NumberFormatException nfe) {
             } finally {
                 x.setText(" ");

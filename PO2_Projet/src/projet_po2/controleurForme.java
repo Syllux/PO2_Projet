@@ -10,6 +10,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.ArrayList;
+import java.util.List;
 
 public class controleurForme implements  AutreEventListener {
 	private modeleForme modele;
@@ -19,13 +21,15 @@ public class controleurForme implements  AutreEventListener {
 
 
 	public void actionADeclancher(AutreEvent event) {
-//		  if (event.getDonnee() instanceof Paire)  {   System.out.println("actionADeclancher add");
-//			  Paire<Integer> point = (Paire<Integer>) event.getDonnee();
-//			  modele.addForme(); 
-//		  } else if (event.getDonnee() instanceof Integer) {   System.out.println("actionADeclancher del");
-//			  int pos = (Integer) event.getDonnee();
-//			  modele.removeForme(pos);
-//		  }
+	  if (event.getDonnee() instanceof List)  {   System.out.println("actionADeclancher add");
+			  List<Paire<Integer>> listePoints = (List<Paire<Integer>>) event.getDonnee(); 
+                          //Le "rectangle" c'ést pour tester
+                          Forme nouvelleforme = new Forme(listePoints,"rectangle");                        
+			  modele.addForme(nouvelleforme);                         
+		  } else if (event.getDonnee() instanceof Integer) {   System.out.println("actionADeclancher del");
+			  int pos = (Integer) event.getDonnee();
+			  modele.removeForme(pos);
+		  }
 	}
 
 
