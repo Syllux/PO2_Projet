@@ -16,7 +16,7 @@ public class Vue extends JPanel implements AutreEventListener {
     private controleurForme controleur;
     private AutreEventNotifieur notifieur = new AutreEventNotifieur();
     private JList<String> choixPoints;
-    private JTextField x, y;
+    private JTextField x, y, largeur, hauteur;
     private Dessin zoneDessin;
     private JRadioButton ligneBrisee, rectangle;
     private ButtonGroup selectionTypeForme;
@@ -30,16 +30,16 @@ public class Vue extends JPanel implements AutreEventListener {
         this.addAutreEventListener(controleur);
         this.setLayout(new BorderLayout());
         
-        // Zone de dessin
+        // Zone de dessin (panel à gauche de la frame)
         JPanel PanelZoneDessin = new JPanel();
         zoneDessin = new Dessin();
         zoneDessin.setOpaque(true);
         zoneDessin.setPreferredSize(new Dimension(600, 400));
-        zoneDessin.setBorder(BorderFactory.createEtchedBorder());
+        zoneDessin.setBorder(BorderFactory.createLoweredBevelBorder());
         PanelZoneDessin.add(zoneDessin);
         this.add(PanelZoneDessin, BorderLayout.WEST);
        
-        // Panel Barre d'outils
+        // Panel Barre d'outils (panel du haut de la frame)
         JPanel PanelBarreOutils = new JPanel();
         PanelBarreOutils.setLayout(new BorderLayout());
         PanelBarreOutils.setBorder(BorderFactory.createTitledBorder("Barre d'outils"));
@@ -54,18 +54,33 @@ public class Vue extends JPanel implements AutreEventListener {
         selectionTypeForme.add(ligneBrisee);
         ChoixForme.add(rectangle);
         ChoixForme.add(ligneBrisee);
-                ChoixForme = new Box(BoxLayout.X_AXIS);
-        // Boxe pour les coordonnées
-        Box ChoixCoordonnees = new Box(BoxLayout.X_AXIS);
+        // Panel pour les coordonnées
+        JPanel ChoixCoordonnees = new JPanel();
+        ChoixCoordonnees.setLayout(new BorderLayout());
         PanelBarreOutils.add(ChoixCoordonnees, BorderLayout.SOUTH);
-        ChoixCoordonnees.add(new JLabel("X : "));
+        //  Panel pour x et y
+        JPanel PanelXY = new JPanel();
+        PanelXY.add(new JLabel("X : "));
         x = new JTextField(5);
-        ChoixCoordonnees.add(x);
-        ChoixCoordonnees.add(new JLabel("Y : "));
+        PanelXY.add(x);
+        PanelXY.add(new JLabel("Y : "));
         y = new JTextField(5);
-        ChoixCoordonnees.add(y);
+        PanelXY.add(y);
+        ChoixCoordonnees.add(PanelXY, BorderLayout.WEST);
+        //Panel longueur - largeur
+        JPanel PanelDimension = new JPanel();
+        PanelDimension.add(new JLabel("Largeur : "));
+        largeur = new JTextField(5);
+        PanelDimension.add(largeur);
+        PanelDimension.add(new JLabel ("Longueur : "));
+        largeur = new JTextField(5);
+        PanelDimension.add(largeur);
+        ChoixCoordonnees.add(PanelDimension, BorderLayout.CENTER);
+        // Panel bouton
+        JPanel PanelAddDelete = new JPanel();
         JButton bouton = new JButton("add");
-        ChoixCoordonnees.add(bouton);
+        PanelAddDelete.add(bouton);
+        ChoixCoordonnees.add(PanelAddDelete, BorderLayout.EAST);
         bouton.addActionListener((ActionEvent ae) -> {
             try {
                 int valx = Integer.parseInt(x.getText().trim());
@@ -78,13 +93,21 @@ public class Vue extends JPanel implements AutreEventListener {
                 y.setText(" ");
             }
         });
-        
-        // ChoixCoordonnees.add(Box.createGlue());
-        ChoixCoordonnees.add(new JLabel(" "));
         choixPoints = new JList<String>();
-        ChoixCoordonnees.add(choixPoints);
+        //ChoixCoordonnees.add(choixPoints);
         bouton = new JButton("del");
-        ChoixCoordonnees.add(bouton);
+        PanelAddDelete.add(bouton);
+        
+        // Panel de la description visuelle (panel à droite de la frame)
+        JPanel ZoneTextuelle = new JPanel();
+        ZoneTextuelle.setBorder(BorderFactory.createTitledBorder("Zone textuelle"));
+        this.add(ZoneTextuelle, BorderLayout.EAST);
+        JTextPane AfficheTexte = new JTextPane();
+        ZoneTextuelle.add(AfficheTexte);
+        String TexteDebut = "Historique des actions";
+        AfficheTexte.setText(TexteDebut);
+        /* Ajouter du text --> String test = "Premiere action";
+        AfficheTexte.setText(AfficheTexte.getText() + test); */
         
 //        ligneBrisee = new JToggleButton("Ligne Brisée");
 //        boite.add(ligneBrisee);
