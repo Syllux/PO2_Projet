@@ -80,19 +80,26 @@ public class Vue extends JPanel implements AutreEventListener {
         ChoixCoordonnees.add(PanelAddDelete, BorderLayout.EAST);
         bouton.addActionListener((ActionEvent ae) -> {
             try {
-                int valx = Integer.parseInt(x1.getText().trim());
-                int valy = Integer.parseInt(y1.getText().trim());
+                int valx1 = Integer.parseInt(x1.getText().trim());
+                int valy1 = Integer.parseInt(y1.getText().trim());
+                int valx2 = Integer.parseInt(x2.getText().trim());
+                int valy2 = Integer.parseInt(y2.getText().trim());              
                 System.out.println("vue add");
-                Paire x1y1 = new Paire(valx, valy);
-                Paire hauteurLargeur = new Paire (x2, y2);
+                Paire x1y1 = new Paire(valx1, valy1);
+                Paire x2y2 = new Paire (valx2, valy2);
                 List<Paire<Integer>> listePoints = new ArrayList<>();
                 listePoints.add(x1y1);
-                listePoints.add(hauteurLargeur);
+                listePoints.add(x2y2);
+                //System.out.println(listePoints.get(0));
+                //System.out.println(listePoints.get(1));
                 //notifieur.diffuserAutreEvent(new AutreEvent(this, new List<Paire<Integer>>(valx, valy)));
             } catch (NumberFormatException nfe) {
+                System.out.println("Il faut donner l'ensemble des coordonnées");
             } finally {
                 x1.setText(" ");
                 y1.setText(" ");
+                x2.setText(" ");
+                y2.setText(" ");
             }
         });
         choixPoints = new JList<String>();
