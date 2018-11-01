@@ -20,6 +20,7 @@ public class Vue extends JPanel implements AutreEventListener {
     private Dessin zoneDessin;
     private JRadioButton ligneBrisee, rectangle;
     private ButtonGroup selectionTypeForme;
+    private JTextPane AfficheTexte;
 //    private JToggleButton ligneBrisee, rectangle;
 
     public Vue(modeleForme modele, controleurForme controleur) {
@@ -80,22 +81,31 @@ public class Vue extends JPanel implements AutreEventListener {
         ChoixCoordonnees.add(PanelAddDelete, BorderLayout.EAST);
         bouton.addActionListener((ActionEvent ae) -> {
             try {
-                int valx1 = Integer.parseInt(x1.getText().trim());
-                int valy1 = Integer.parseInt(y1.getText().trim());
-                int valx2 = Integer.parseInt(x2.getText().trim());
-                int valy2 = Integer.parseInt(y2.getText().trim());              
-                System.out.println("vue add");
-                Paire x1y1 = new Paire(valx1, valy1);
-                Paire x2y2 = new Paire (valx2, valy2);
-                List<Paire<Integer>> listePoints = new ArrayList<>();
-                listePoints.add(x1y1);
-                listePoints.add(x2y2);
-                //System.out.println(listePoints.get(0));
-                //System.out.println(listePoints.get(1));
-                notifieur.diffuserAutreEvent(new AutreEvent(this,  listePoints.get(0)));
-            } catch (NumberFormatException nfe) {
-                System.out.println("Il faut donner l'ensemble des coordonnées");
-            } finally {
+                if (rectangle.getSelectedObjects() != null || ligneBrisee.getSelectedObjects() != null) {
+                    int valx1 = Integer.parseInt(x1.getText().trim());
+                    int valy1 = Integer.parseInt(y1.getText().trim());
+                    int valx2 = Integer.parseInt(x2.getText().trim());
+                    int valy2 = Integer.parseInt(y2.getText().trim());              
+                    System.out.println("vue add");
+                    Paire x1y1 = new Paire(valx1, valy1);
+                    Paire x2y2 = new Paire (valx2, valy2);
+                    List<Paire<Integer>> listePoints = new ArrayList<>();
+                    listePoints.add(x1y1);
+                    listePoints.add(x2y2);
+                    //System.out.println(listePoints.get(0));
+                    //System.out.println(listePoints.get(1));
+                    notifieur.diffuserAutreEvent(new AutreEvent(this,  listePoints));
+                }
+                else 
+                    throw new Exception("Aucune forme n'a été selectionnée");
+            } 
+            catch (NumberFormatException nfe) {
+                System.err.println("Il faut donner l'ensemble des coordonnées");
+            } 
+            catch (Exception e) {
+                System.err.println(e.getMessage());
+            } 
+            finally {
                 x1.setText(" ");
                 y1.setText(" ");
                 x2.setText(" ");
@@ -111,12 +121,9 @@ public class Vue extends JPanel implements AutreEventListener {
         JPanel ZoneTextuelle = new JPanel();
         ZoneTextuelle.setBorder(BorderFactory.createTitledBorder("Zone textuelle"));
         this.add(ZoneTextuelle, BorderLayout.EAST);
-        JTextPane AfficheTexte = new JTextPane();
+        AfficheTexte = new JTextPane();
         ZoneTextuelle.add(AfficheTexte);
-        String TexteDebut = "Historique des actions";
-        AfficheTexte.setText(TexteDebut);
-        /* Ajouter du text --> String test = "Premiere action";
-        AfficheTexte.setText(AfficheTexte.getText() + test); */
+        AfficheTexte.setText("                                                ");
         
 //        ligneBrisee = new JToggleButton("Ligne Brisée");
 //        boite.add(ligneBrisee);
@@ -145,7 +152,15 @@ public class Vue extends JPanel implements AutreEventListener {
 
     @Override
     public void actionADeclancher(AutreEvent evt) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        // Affichage de la nouvelle forme dans la zone textuelle
+        if (evt.getSource() instanceof modeleForme && evt.getDonnee() instanceof ArrayList) {
+            System.out.println("Dans action a declencher");
+            List ListeForme = new ArrayList<>((ArrayList)evt.getDonnee());
+            AfficheTexte.setText(ListeForme.get(ListeForme.size()-1) + "\n" + AfficheTexte.getText());
+        }
+        else 
+            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
     }
 
 }

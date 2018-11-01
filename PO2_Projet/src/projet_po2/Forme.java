@@ -16,14 +16,25 @@ public class Forme {
 
     private String typeForme;
     private List<Paire<Integer>> listePoints = new ArrayList<>();
+    
+    public Forme() {
+        this.listePoints = null;
+        this.typeForme = "";
+    }
 
     public Forme(List<Paire<Integer>> liste, String type) {
         this.listePoints = liste;
         this.typeForme = type;
     }
 
+    // Constructeur par recopie
+    public Forme(Forme forme){
+        this.listePoints = forme.getList();
+        this.typeForme = forme.getType();
+    }
+    
     public String toString() {
-        return "(" + typeForme.toString() + "," + listePoints.toString() + ")";
+        return typeForme.toString() + "," + listePoints.toString();
     }
 
     public String getType() {

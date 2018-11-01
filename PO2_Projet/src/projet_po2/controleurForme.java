@@ -21,13 +21,9 @@ public class controleurForme implements  AutreEventListener {
 
 
 	public void actionADeclancher(AutreEvent event) {
-	  if (event.getDonnee() instanceof Paire)  {   
+	  if (event.getDonnee() instanceof ArrayList)  {
               System.out.println("actionADeclancher add");
-              List<Paire<Integer>> listePoints = new ArrayList<>();
-              listePoints.add((Paire)event.getDonnee());
-              System.out.println(listePoints.get(0));
-//(List<Paire<Integer>>) event.getDonnee();
-                //Le "rectangle" c'ést pour tester
+              List<Paire<Integer>> listePoints = new ArrayList<>((ArrayList)event.getDonnee());
                 Forme nouvelleforme = new Forme(listePoints,"rectangle");
                 modele.addForme(nouvelleforme);
           } else if (event.getDonnee() instanceof Integer) {   

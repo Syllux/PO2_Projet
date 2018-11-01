@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package projet_po2;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -14,7 +15,7 @@ import java.util.LinkedList;
  */
 public class modeleForme {
 
-    private List<Forme> ListForme = new LinkedList<>();
+    private List<Forme> ListForme = new ArrayList<>();
     private AutreEventNotifieur notifieur = new AutreEventNotifieur();
     public void addForme(Forme forme) {
 		ListForme.add(forme);                  
