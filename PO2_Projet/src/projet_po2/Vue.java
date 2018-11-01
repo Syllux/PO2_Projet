@@ -92,7 +92,7 @@ public class Vue extends JPanel implements AutreEventListener {
                 listePoints.add(x2y2);
                 //System.out.println(listePoints.get(0));
                 //System.out.println(listePoints.get(1));
-                //notifieur.diffuserAutreEvent(new AutreEvent(this, new List<Paire<Integer>>(valx, valy)));
+                notifieur.diffuserAutreEvent(new AutreEvent(this,  listePoints.get(0)));
             } catch (NumberFormatException nfe) {
                 System.out.println("Il faut donner l'ensemble des coordonnées");
             } finally {

@@ -21,16 +21,21 @@ public class controleurForme implements  AutreEventListener {
 
 
 	public void actionADeclancher(AutreEvent event) {
-	  if (event.getDonnee() instanceof List)  {   System.out.println("actionADeclancher add");
-			  List<Paire<Integer>> listePoints = (List<Paire<Integer>>) event.getDonnee(); 
-                          //Le "rectangle" c'ést pour tester
-                          Forme nouvelleforme = new Forme(listePoints,"rectangle");                        
-			  modele.addForme(nouvelleforme);                         
-		  } else if (event.getDonnee() instanceof Integer) {   System.out.println("actionADeclancher del");
-			  int pos = (Integer) event.getDonnee();
-			  modele.removeForme(pos);
-		  }
-	}
+	  if (event.getDonnee() instanceof Paire)  {   
+              System.out.println("actionADeclancher add");
+              List<Paire<Integer>> listePoints = new ArrayList<>();
+              listePoints.add((Paire)event.getDonnee());
+              System.out.println(listePoints.get(0));
+//(List<Paire<Integer>>) event.getDonnee();
+                //Le "rectangle" c'ést pour tester
+                Forme nouvelleforme = new Forme(listePoints,"rectangle");
+                modele.addForme(nouvelleforme);
+          } else if (event.getDonnee() instanceof Integer) {   
+              System.out.println("actionADeclancher del"); 
+              int pos = (Integer) event.getDonnee();
+              modele.removeForme(pos);
+          }
+        }
 
 
 //    @Override
