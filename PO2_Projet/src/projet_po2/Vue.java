@@ -16,7 +16,7 @@ public class Vue extends JPanel implements AutreEventListener {
     private controleurForme controleur;
     private AutreEventNotifieur notifieur = new AutreEventNotifieur();
     private JList<String> choixPoints;
-    private JTextField x1, y1, x2, y2;
+    private JTextField x1, y1, x2, y2, Epaisseur, Couleur;
     private Dessin zoneDessin;
     private JRadioButton ligneBrisee, rectangle;
     private ButtonGroup selectionTypeForme;
@@ -35,7 +35,7 @@ public class Vue extends JPanel implements AutreEventListener {
         JPanel PanelZoneDessin = new JPanel();
         zoneDessin = new Dessin();
         zoneDessin.setOpaque(true);
-        zoneDessin.setPreferredSize(new Dimension(400, 200));
+        zoneDessin.setPreferredSize(new Dimension(800, 400));
         zoneDessin.setBorder(BorderFactory.createLoweredBevelBorder());
         PanelZoneDessin.add(zoneDessin);
         this.add(PanelZoneDessin, BorderLayout.WEST);
@@ -67,13 +67,22 @@ public class Vue extends JPanel implements AutreEventListener {
         PanelXY.add(new JLabel("Y1 : "));
         y1 = new JTextField(5);
         PanelXY.add(y1);
-        ChoixCoordonnees.add(PanelXY, BorderLayout.CENTER);
         PanelXY.add(new JLabel("X2 : "));
         x2 = new JTextField(5);
         PanelXY.add(x2);
         PanelXY.add(new JLabel ("Y2 : "));
         y2 = new JTextField(5);
         PanelXY.add(y2);
+        ChoixCoordonnees.add(PanelXY, BorderLayout.WEST);
+        // Panel Dimension et couleur
+        JPanel PanelDimCouleur = new JPanel();
+        PanelDimCouleur.add(new JLabel("Epaisseur : "));
+        Epaisseur = new JTextField(5);
+        PanelDimCouleur.add(Epaisseur);
+        PanelDimCouleur.add(new JLabel("Couleur : "));
+        Couleur = new JTextField(5);
+        PanelDimCouleur.add(Couleur);
+        ChoixCoordonnees.add(PanelDimCouleur, BorderLayout.CENTER);
         // Panel bouton
         JPanel PanelAddDelete = new JPanel();
         JButton bouton = new JButton("add");
@@ -81,19 +90,27 @@ public class Vue extends JPanel implements AutreEventListener {
         ChoixCoordonnees.add(PanelAddDelete, BorderLayout.EAST);
         bouton.addActionListener((ActionEvent ae) -> {
             try {
+                // Si l'utilisateur appuie sur "add"
                 if (rectangle.getSelectedObjects() != null || ligneBrisee.getSelectedObjects() != null) {
                     int valx1 = Integer.parseInt(x1.getText().trim());
                     int valy1 = Integer.parseInt(y1.getText().trim());
                     int valx2 = Integer.parseInt(x2.getText().trim());
-                    int valy2 = Integer.parseInt(y2.getText().trim());              
+                    int valy2 = Integer.parseInt(y2.getText().trim()); 
+                    int valEpaisseur = Integer.parseInt(Epaisseur.getText().trim()); 
+                    String valCouleur = String.valueOf(Couleur.getText());
                     System.out.println("vue add");
                     Paire x1y1 = new Paire(valx1, valy1);
                     Paire x2y2 = new Paire (valx2, valy2);
-                    List<Paire<Integer>> listePoints = new ArrayList<>();
+                    List listePoints = new ArrayList();
+                    //Récupère le nom de la forme selectionnee
+                    if(rectangle.getSelectedObjects() != null)
+                        listePoints.add(rectangle.getActionCommand());
+                    else
+                        listePoints.add(ligneBrisee.getActionCommand());
                     listePoints.add(x1y1);
                     listePoints.add(x2y2);
-                    //System.out.println(listePoints.get(0));
-                    //System.out.println(listePoints.get(1));
+                    listePoints.add(valEpaisseur);
+                    listePoints.add(valCouleur);
                     notifieur.diffuserAutreEvent(new AutreEvent(this,  listePoints));
                 }
                 else 

@@ -23,7 +23,11 @@ public class Forme {
     }
 
     public Forme(List<Paire<Integer>> liste, String type) {
-        this.listePoints = liste;
+        // On récupère que les variables de type Paire dans la liste
+        for (int i = 0; i < liste.size(); i++) {
+            if (liste.get(i) instanceof Paire)
+                this.listePoints.add(liste.get(i));          
+        }
         this.typeForme = type;
     }
 
@@ -34,7 +38,7 @@ public class Forme {
     }
     
     public String toString() {
-        return typeForme.toString() + "," + listePoints.toString();
+        return typeForme.toString() + " : " + listePoints.toString();
     }
 
     public String getType() {
