@@ -16,11 +16,12 @@ public class Vue extends JPanel implements AutreEventListener {
     private controleurForme controleur;
     private AutreEventNotifieur notifieur = new AutreEventNotifieur();
     private JList<String> choixPoints;
-    private JTextField x1, y1, x2, y2, Epaisseur, Couleur;
+    private JTextField x1, y1, x2, y2, Epaisseur, Couleur, Delete;
     private Dessin zoneDessin;
     private JRadioButton ligneBrisee, rectangle;
     private ButtonGroup selectionTypeForme;
     private JTextPane AfficheTexte;
+    private int nbEltListe = 0;
 //    private JToggleButton ligneBrisee, rectangle;
 
     public Vue(modeleForme modele, controleurForme controleur) {
@@ -59,7 +60,7 @@ public class Vue extends JPanel implements AutreEventListener {
         JPanel ChoixCoordonnees = new JPanel();
         ChoixCoordonnees.setLayout(new BorderLayout());
         PanelBarreOutils.add(ChoixCoordonnees, BorderLayout.SOUTH);
-        //  Panel pour les x et y
+        //  Panel pour les x, y, epaisseur, couleur et bouton add
         JPanel PanelXY = new JPanel();
         PanelXY.add(new JLabel("X1 : "));
         x1 = new JTextField(5);
@@ -73,22 +74,16 @@ public class Vue extends JPanel implements AutreEventListener {
         PanelXY.add(new JLabel ("Y2 : "));
         y2 = new JTextField(5);
         PanelXY.add(y2);
-        ChoixCoordonnees.add(PanelXY, BorderLayout.WEST);
-        // Panel Dimension et couleur
-        JPanel PanelDimCouleur = new JPanel();
-        PanelDimCouleur.add(new JLabel("Epaisseur : "));
+        PanelXY.add(new JLabel("Epaisseur : "));
         Epaisseur = new JTextField(5);
-        PanelDimCouleur.add(Epaisseur);
-        PanelDimCouleur.add(new JLabel("Couleur : "));
+        PanelXY.add(Epaisseur);
+        PanelXY.add(new JLabel("Couleur : "));
         Couleur = new JTextField(5);
-        PanelDimCouleur.add(Couleur);
-        ChoixCoordonnees.add(PanelDimCouleur, BorderLayout.CENTER);
-        // Panel bouton
-        JPanel PanelAddDelete = new JPanel();
-        JButton bouton = new JButton("add");
-        PanelAddDelete.add(bouton);
-        ChoixCoordonnees.add(PanelAddDelete, BorderLayout.EAST);
-        bouton.addActionListener((ActionEvent ae) -> {
+        PanelXY.add(Couleur);
+        ChoixCoordonnees.add(PanelXY, BorderLayout.WEST);
+        JButton boutonAdd = new JButton("add");
+        PanelXY.add(boutonAdd);
+        boutonAdd.addActionListener((ActionEvent ae) -> {
             try {
                 // Si l'utilisateur appuie sur "add"
                 if (rectangle.getSelectedObjects() != null || ligneBrisee.getSelectedObjects() != null) {
@@ -96,8 +91,12 @@ public class Vue extends JPanel implements AutreEventListener {
                     int valy1 = Integer.parseInt(y1.getText().trim());
                     int valx2 = Integer.parseInt(x2.getText().trim());
                     int valy2 = Integer.parseInt(y2.getText().trim()); 
-                    int valEpaisseur = Integer.parseInt(Epaisseur.getText().trim()); 
-                    String valCouleur = String.valueOf(Couleur.getText());
+                    int valEpaisseur = 1;
+                    String valCouleur = "Noir";
+                    if (Epaisseur.getText()== "")
+                        valEpaisseur = Integer.parseInt(Epaisseur.getText().trim()); 
+                    if (Couleur.getText() == "")
+                        valCouleur = String.valueOf(Couleur.getText());
                     System.out.println("vue add");
                     Paire x1y1 = new Paire(valx1, valy1);
                     Paire x2y2 = new Paire (valx2, valy2);
@@ -111,13 +110,14 @@ public class Vue extends JPanel implements AutreEventListener {
                     listePoints.add(x2y2);
                     listePoints.add(valEpaisseur);
                     listePoints.add(valCouleur);
+                    nbEltListe++;
                     notifieur.diffuserAutreEvent(new AutreEvent(this,  listePoints));
                 }
                 else 
                     throw new Exception("Aucune forme n'a été selectionnée");
             } 
             catch (NumberFormatException nfe) {
-                System.err.println("Il faut donner l'ensemble des coordonnées");
+                System.err.println("Veuillez spécifier toutes les coordonnées");
             } 
             catch (Exception e) {
                 System.err.println(e.getMessage());
@@ -127,12 +127,41 @@ public class Vue extends JPanel implements AutreEventListener {
                 y1.setText(" ");
                 x2.setText(" ");
                 y2.setText(" ");
+                Epaisseur.setText(" ");
+                Couleur.setText(" ");
             }
         });
+        // Panel pour delete
+        JPanel PanelDelete = new JPanel();
         choixPoints = new JList<String>();
-        //ChoixCoordonnees.add(choixPoints);
-        bouton = new JButton("del");
-        PanelAddDelete.add(bouton);
+        Delete = new JTextField("N° forme à supprimer");
+        PanelDelete.add(Delete);
+        JButton boutonDelete = new JButton("del");
+        PanelDelete.add(boutonDelete);
+        ChoixCoordonnees.add(PanelDelete, BorderLayout.SOUTH);
+        boutonDelete.addActionListener((ActionEvent ae2) -> {
+            try {
+                // Si l'utilisateur appuie sur "dell"
+                if (Delete.getText()!= null) {
+                    int valDelete = Integer.parseInt(Delete.getText().trim());
+                    System.out.println("vue delete");
+                    notifieur.diffuserAutreEvent(new AutreEvent(this,  valDelete));
+                }
+                else 
+                    throw new Exception("Aucune forme définie pour la suppression");
+            } 
+            catch (NumberFormatException nfe) {
+                System.err.println(nfe.getMessage());
+                System.out.println("Dans delete");
+            } 
+            catch (Exception e) {
+                System.err.println(e.getMessage());
+                System.out.println("Dans delete");
+            } 
+            finally {
+                Delete.setText("          ");
+            }
+        });
         
         // Panel de la description visuelle (panel à droite de la frame)
         JPanel ZoneTextuelle = new JPanel();
@@ -173,7 +202,21 @@ public class Vue extends JPanel implements AutreEventListener {
         if (evt.getSource() instanceof modeleForme && evt.getDonnee() instanceof ArrayList) {
             System.out.println("Dans action a declencher");
             List ListeForme = new ArrayList<>((ArrayList)evt.getDonnee());
-            AfficheTexte.setText(ListeForme.get(ListeForme.size()-1) + "\n" + AfficheTexte.getText());
+            System.out.println(nbEltListe);
+            System.out.println(ListeForme.size());
+            // Si on ajoute une forme, on l'affiche dans la zone textuelle
+            if (ListeForme.size() == nbEltListe)
+                AfficheTexte.setText(ListeForme.get(ListeForme.size()-1) + "\n" + AfficheTexte.getText());
+            // Sinon on la supprime de la zone textuelle
+            else if (ListeForme.size() != nbEltListe) {
+                if (ListeForme.size() == 0) 
+                    AfficheTexte.setText("            ");
+                else
+                    AfficheTexte.setText(ListeForme.get(0) + "\n");
+                for (int i = 1; i < ListeForme.size(); i++)
+                    AfficheTexte.setText(ListeForme.get(i) + "\n" + AfficheTexte.getText());
+                nbEltListe--;
+            }
         }
         else 
             throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
