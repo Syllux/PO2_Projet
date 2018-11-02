@@ -166,14 +166,10 @@ public class Vue extends JPanel implements AutreEventListener {
         this.add(ZoneTextuelle, BorderLayout.EAST);
         AfficheTexte = new JTextPane();
         ZoneTextuelle.add(AfficheTexte);
-<<<<<<< HEAD
-        AfficheTexte.setText("                                                ");
 
-=======
-        ZoneTextuelle.setPreferredSize(new Dimension(200,100));
+        ZoneTextuelle.setPreferredSize(new Dimension(200, 100));
         AfficheTexte.setSize(ZoneTextuelle.getPreferredSize());
-        
->>>>>>> ec86b305d1df6d0e032030b54c8a0f9d956b9d4a
+
 //        ligneBrisee = new JToggleButton("Ligne Brisée");
 //        boite.add(ligneBrisee);
 //        boite = new Box(BoxLayout.X_AXIS);
@@ -245,33 +241,19 @@ public class Vue extends JPanel implements AutreEventListener {
             System.out.println(ListeForme.size());
 
             // Si on ajoute une forme, on l'affiche dans la zone textuelle
-<<<<<<< HEAD
             if (ListeForme.size() == nbEltListe) {
-                AfficheTexte.setText(ListeForme.get(ListeForme.size() - 1) + "\n" + AfficheTexte.getText());
-                zoneDessin.setListeForme(ListeForme);
-                zoneDessin.repaint();
+                AfficheTexte.setText(ListeForme.size() - 1 + " -> " + ListeForme.get(ListeForme.size() - 1) + "\n" + AfficheTexte.getText());
             } // Sinon on la supprime de la zone textuelle
-=======
-            if (ListeForme.size() == nbEltListe)
-                AfficheTexte.setText(ListeForme.size() - 1 + " -> " + ListeForme.get(ListeForme.size()-1) + "\n" + AfficheTexte.getText());
-            // Sinon on la supprime de la zone textuelle
->>>>>>> ec86b305d1df6d0e032030b54c8a0f9d956b9d4a
             else if (ListeForme.size() != nbEltListe) {
                 if (ListeForme.size() == 0) {
                     AfficheTexte.setText("            ");
-<<<<<<< HEAD
                 } else {
-                    AfficheTexte.setText(ListeForme.get(0) + "\n");
+                    AfficheTexte.setText("0 -> " + ListeForme.get(0) + "\n");
                 }
                 for (int i = 1; i < ListeForme.size(); i++) {
-                    AfficheTexte.setText(ListeForme.get(i) + "\n" + AfficheTexte.getText());
-                }
-=======
-                else
-                    AfficheTexte.setText("0 -> " + ListeForme.get(0) + "\n");
-                for (int i = 1; i < ListeForme.size(); i++)
                     AfficheTexte.setText(i + " -> " + ListeForme.get(i) + "\n" + AfficheTexte.getText());
->>>>>>> ec86b305d1df6d0e032030b54c8a0f9d956b9d4a
+                }
+
                 nbEltListe--;
             }
         } else {
