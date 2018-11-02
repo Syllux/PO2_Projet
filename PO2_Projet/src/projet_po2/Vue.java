@@ -169,7 +169,8 @@ public class Vue extends JPanel implements AutreEventListener {
         this.add(ZoneTextuelle, BorderLayout.EAST);
         AfficheTexte = new JTextPane();
         ZoneTextuelle.add(AfficheTexte);
-        AfficheTexte.setText("                                                ");
+        ZoneTextuelle.setPreferredSize(new Dimension(200,100));
+        AfficheTexte.setSize(ZoneTextuelle.getPreferredSize());
         
 //        ligneBrisee = new JToggleButton("Ligne Brisée");
 //        boite.add(ligneBrisee);
@@ -206,15 +207,15 @@ public class Vue extends JPanel implements AutreEventListener {
             System.out.println(ListeForme.size());
             // Si on ajoute une forme, on l'affiche dans la zone textuelle
             if (ListeForme.size() == nbEltListe)
-                AfficheTexte.setText(ListeForme.get(ListeForme.size()-1) + "\n" + AfficheTexte.getText());
+                AfficheTexte.setText(ListeForme.size() - 1 + " -> " + ListeForme.get(ListeForme.size()-1) + "\n" + AfficheTexte.getText());
             // Sinon on la supprime de la zone textuelle
             else if (ListeForme.size() != nbEltListe) {
                 if (ListeForme.size() == 0) 
                     AfficheTexte.setText("            ");
                 else
-                    AfficheTexte.setText(ListeForme.get(0) + "\n");
+                    AfficheTexte.setText("0 -> " + ListeForme.get(0) + "\n");
                 for (int i = 1; i < ListeForme.size(); i++)
-                    AfficheTexte.setText(ListeForme.get(i) + "\n" + AfficheTexte.getText());
+                    AfficheTexte.setText(i + " -> " + ListeForme.get(i) + "\n" + AfficheTexte.getText());
                 nbEltListe--;
             }
         }
