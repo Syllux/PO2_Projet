@@ -3,6 +3,8 @@ package projet_po2;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.List;
@@ -195,7 +197,7 @@ public class Vue extends JPanel implements AutreEventListener {
             System.out.println("paint");
             super.paintComponent(g);
             int nombre = ListeForme.size();
-            if (nombre > 1) {
+            if (nombre > 0) {
                 Forme FormeActuel = new Forme();
                 Paire<Integer> pointActuel;
                 Paire<Integer> pointSuivant;
@@ -204,18 +206,31 @@ public class Vue extends JPanel implements AutreEventListener {
                     FormeActuel = ListeForme.get(i);
                     System.out.println(FormeActuel.getType());
                     System.out.println(FormeActuel.getList());
-
                     listePoints = FormeActuel.getList();
-                    int nombrePoint = listePoints.size();
-                    if (nombrePoint > 1) {
-                        pointActuel = listePoints.get(0);
-                        for (int j = 1; j < nombre; j++) {
-                            pointSuivant = listePoints.get(j);
-                            g.drawLine(pointActuel.getPremier(), pointActuel.getSecond(),
-                                    pointSuivant.getPremier(), pointSuivant.getSecond());
-                            pointActuel = pointSuivant;
+                    if (FormeActuel.getType() == "Rectangle") {
+
+                        Paire Paire1 = listePoints.get(0);
+                        Point point1 = new Point((int) Paire1.getPremier(), (int) Paire1.getSecond());
+                        Paire1 = listePoints.get(1);
+                        Point point2 = new Point((int) Paire1.getPremier(), (int) Paire1.getSecond());
+                        Rectangle rect = new Rectangle(point1);
+                        rect.add(point2);
+
+                        g.drawRect(rect.x, rect.y, rect.width, rect.height);
+                    } else {
+                        int nombrePoint = listePoints.size();
+                        if (nombrePoint > 1) {
+                            pointActuel = listePoints.get(0);
+                            for (int j = 1; j < nombre; j++) {
+                                pointSuivant = listePoints.get(j);
+                                g.drawLine(pointActuel.getPremier(), pointActuel.getSecond(),
+                                        pointSuivant.getPremier(), pointSuivant.getSecond());
+                                pointActuel = pointSuivant;
+                            }
                         }
                     }
+
+//                   
                 }
 
             }
@@ -255,10 +270,15 @@ public class Vue extends JPanel implements AutreEventListener {
                 }
 
                 nbEltListe--;
+
             }
+
+            zoneDessin.setListeForme(ListeForme);
+            zoneDessin.repaint();
         } else {
             throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         }
+
     }
 
 }
