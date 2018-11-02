@@ -31,7 +31,7 @@ public class Vue extends JPanel implements AutreEventListener {
         this.controleur = controleur;
         this.addAutreEventListener(controleur);
         this.setLayout(new BorderLayout());
-        
+
         // Zone de dessin (panel à gauche de la frame)
         JPanel PanelZoneDessin = new JPanel();
         zoneDessin = new Dessin();
@@ -40,7 +40,7 @@ public class Vue extends JPanel implements AutreEventListener {
         zoneDessin.setBorder(BorderFactory.createLoweredBevelBorder());
         PanelZoneDessin.add(zoneDessin);
         this.add(PanelZoneDessin, BorderLayout.WEST);
-       
+
         // Panel Barre d'outils (panel du haut de la frame)
         JPanel PanelBarreOutils = new JPanel();
         PanelBarreOutils.setLayout(new BorderLayout());
@@ -52,7 +52,7 @@ public class Vue extends JPanel implements AutreEventListener {
         selectionTypeForme = new ButtonGroup();
         rectangle = new JRadioButton("Rectangle");
         selectionTypeForme.add(rectangle);
-        ligneBrisee= new JRadioButton("Ligne Brisée");
+        ligneBrisee = new JRadioButton("Ligne Brisée");
         selectionTypeForme.add(ligneBrisee);
         ChoixForme.add(rectangle);
         ChoixForme.add(ligneBrisee);
@@ -71,7 +71,7 @@ public class Vue extends JPanel implements AutreEventListener {
         PanelXY.add(new JLabel("X2 : "));
         x2 = new JTextField(5);
         PanelXY.add(x2);
-        PanelXY.add(new JLabel ("Y2 : "));
+        PanelXY.add(new JLabel("Y2 : "));
         y2 = new JTextField(5);
         PanelXY.add(y2);
         PanelXY.add(new JLabel("Epaisseur : "));
@@ -90,39 +90,39 @@ public class Vue extends JPanel implements AutreEventListener {
                     int valx1 = Integer.parseInt(x1.getText().trim());
                     int valy1 = Integer.parseInt(y1.getText().trim());
                     int valx2 = Integer.parseInt(x2.getText().trim());
-                    int valy2 = Integer.parseInt(y2.getText().trim()); 
+                    int valy2 = Integer.parseInt(y2.getText().trim());
                     int valEpaisseur = 1;
                     String valCouleur = "Noir";
-                    if (Epaisseur.getText()== "")
-                        valEpaisseur = Integer.parseInt(Epaisseur.getText().trim()); 
-                    if (Couleur.getText() == "")
+                    if (Epaisseur.getText() == "") {
+                        valEpaisseur = Integer.parseInt(Epaisseur.getText().trim());
+                    }
+                    if (Couleur.getText() == "") {
                         valCouleur = String.valueOf(Couleur.getText());
+                    }
                     System.out.println("vue add");
                     Paire x1y1 = new Paire(valx1, valy1);
-                    Paire x2y2 = new Paire (valx2, valy2);
+                    Paire x2y2 = new Paire(valx2, valy2);
                     List listePoints = new ArrayList();
                     //Récupère le nom de la forme selectionnee
-                    if(rectangle.getSelectedObjects() != null)
+                    if (rectangle.getSelectedObjects() != null) {
                         listePoints.add(rectangle.getActionCommand());
-                    else
+                    } else {
                         listePoints.add(ligneBrisee.getActionCommand());
+                    }
                     listePoints.add(x1y1);
                     listePoints.add(x2y2);
                     listePoints.add(valEpaisseur);
                     listePoints.add(valCouleur);
                     nbEltListe++;
-                    notifieur.diffuserAutreEvent(new AutreEvent(this,  listePoints));
-                }
-                else 
+                    notifieur.diffuserAutreEvent(new AutreEvent(this, listePoints));
+                } else {
                     throw new Exception("Aucune forme n'a été selectionnée");
-            } 
-            catch (NumberFormatException nfe) {
+                }
+            } catch (NumberFormatException nfe) {
                 System.err.println("Veuillez spécifier toutes les coordonnées");
-            } 
-            catch (Exception e) {
+            } catch (Exception e) {
                 System.err.println(e.getMessage());
-            } 
-            finally {
+            } finally {
                 x1.setText(" ");
                 y1.setText(" ");
                 x2.setText(" ");
@@ -142,27 +142,24 @@ public class Vue extends JPanel implements AutreEventListener {
         boutonDelete.addActionListener((ActionEvent ae2) -> {
             try {
                 // Si l'utilisateur appuie sur "dell"
-                if (Delete.getText()!= null) {
+                if (Delete.getText() != null) {
                     int valDelete = Integer.parseInt(Delete.getText().trim());
                     System.out.println("vue delete");
-                    notifieur.diffuserAutreEvent(new AutreEvent(this,  valDelete));
-                }
-                else 
+                    notifieur.diffuserAutreEvent(new AutreEvent(this, valDelete));
+                } else {
                     throw new Exception("Aucune forme définie pour la suppression");
-            } 
-            catch (NumberFormatException nfe) {
+                }
+            } catch (NumberFormatException nfe) {
                 System.err.println(nfe.getMessage());
                 System.out.println("Dans delete");
-            } 
-            catch (Exception e) {
+            } catch (Exception e) {
                 System.err.println(e.getMessage());
                 System.out.println("Dans delete");
-            } 
-            finally {
+            } finally {
                 Delete.setText("          ");
             }
         });
-        
+
         // Panel de la description visuelle (panel à droite de la frame)
         JPanel ZoneTextuelle = new JPanel();
         ZoneTextuelle.setBorder(BorderFactory.createTitledBorder("Zone textuelle"));
@@ -170,23 +167,59 @@ public class Vue extends JPanel implements AutreEventListener {
         AfficheTexte = new JTextPane();
         ZoneTextuelle.add(AfficheTexte);
         AfficheTexte.setText("                                                ");
-        
+
 //        ligneBrisee = new JToggleButton("Ligne Brisée");
 //        boite.add(ligneBrisee);
 //        boite = new Box(BoxLayout.X_AXIS);
 //        boiteGauche.add(boite);
 //        rectangle = new JToggleButton("Rectangle");
 //        boite.add(rectangle);
-        
-        
     }
-    
-    
+
     public class Dessin extends JPanel {
 
-       
-    }
+        private List<Forme> ListeForme = new ArrayList<>();
+        private List<Paire<Integer>> listePoints = new ArrayList<>();
 
+        public Dessin() {
+            this.setPreferredSize(new Dimension(400, 400));
+        }
+
+        public void setListeForme(List Forme) {
+            this.ListeForme = Forme;
+        }
+
+        public void paintComponent(Graphics g) {
+            System.out.println("paint");
+            super.paintComponent(g);
+            int nombre = ListeForme.size();
+            if (nombre > 1) {
+                Forme FormeActuel = new Forme();
+                Paire<Integer> pointActuel;
+                Paire<Integer> pointSuivant;
+                for (int i = 0; i < nombre; i++) {
+                    //On récupère les formes une par une
+                    FormeActuel = ListeForme.get(i);
+                    System.out.println(FormeActuel.getType());
+                    System.out.println(FormeActuel.getList());
+
+                    listePoints = FormeActuel.getList();
+                    int nombrePoint = listePoints.size();
+                    if (nombrePoint > 1) {
+                        pointActuel = listePoints.get(0);
+                        for (int j = 1; j < nombre; j++) {
+                            pointSuivant = listePoints.get(j);
+                            g.drawLine(pointActuel.getPremier(), pointActuel.getSecond(),
+                                    pointSuivant.getPremier(), pointSuivant.getSecond());
+                            pointActuel = pointSuivant;
+                        }
+                    }
+                }
+
+            }
+
+        }
+    }
 
     public void addAutreEventListener(AutreEventListener listener) {
         notifieur.addAutreEventListener(listener);
@@ -201,26 +234,30 @@ public class Vue extends JPanel implements AutreEventListener {
         // Affichage de la nouvelle forme dans la zone textuelle
         if (evt.getSource() instanceof modeleForme && evt.getDonnee() instanceof ArrayList) {
             System.out.println("Dans action a declencher");
-            List ListeForme = new ArrayList<>((ArrayList)evt.getDonnee());
+            List ListeForme = new ArrayList<>((ArrayList) evt.getDonnee());
             System.out.println(nbEltListe);
             System.out.println(ListeForme.size());
+
             // Si on ajoute une forme, on l'affiche dans la zone textuelle
-            if (ListeForme.size() == nbEltListe)
-                AfficheTexte.setText(ListeForme.get(ListeForme.size()-1) + "\n" + AfficheTexte.getText());
-            // Sinon on la supprime de la zone textuelle
+            if (ListeForme.size() == nbEltListe) {
+                AfficheTexte.setText(ListeForme.get(ListeForme.size() - 1) + "\n" + AfficheTexte.getText());
+                zoneDessin.setListeForme(ListeForme);
+                zoneDessin.repaint();
+            } // Sinon on la supprime de la zone textuelle
             else if (ListeForme.size() != nbEltListe) {
-                if (ListeForme.size() == 0) 
+                if (ListeForme.size() == 0) {
                     AfficheTexte.setText("            ");
-                else
+                } else {
                     AfficheTexte.setText(ListeForme.get(0) + "\n");
-                for (int i = 1; i < ListeForme.size(); i++)
+                }
+                for (int i = 1; i < ListeForme.size(); i++) {
                     AfficheTexte.setText(ListeForme.get(i) + "\n" + AfficheTexte.getText());
+                }
                 nbEltListe--;
             }
-        }
-        else 
+        } else {
             throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-        
+        }
     }
 
 }
