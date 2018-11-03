@@ -1,8 +1,10 @@
 package projet_po2;
 
 import java.awt.BorderLayout;
+import static java.awt.Color.black;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Color;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
@@ -18,7 +20,7 @@ public class Vue extends JPanel implements AutreEventListener {
     private controleurForme controleur;
     private AutreEventNotifieur notifieur = new AutreEventNotifieur();
     private JList<String> choixPoints;
-    private JTextField x1, y1, x2, y2, Epaisseur, Couleur, Delete;
+    private JTextField x1, y1, x2, y2, Epaisseur, CouleurR, CouleurG, CouleurB, Delete;
     private Dessin zoneDessin;
     private JRadioButton ligneBrisee, rectangle;
     private ButtonGroup selectionTypeForme;
@@ -80,8 +82,15 @@ public class Vue extends JPanel implements AutreEventListener {
         Epaisseur = new JTextField(5);
         PanelXY.add(Epaisseur);
         PanelXY.add(new JLabel("Couleur : "));
-        Couleur = new JTextField(5);
-        PanelXY.add(Couleur);
+        PanelXY.add(new JLabel("R : "));
+        CouleurR = new JTextField(5);
+        PanelXY.add(CouleurR);
+        PanelXY.add(new JLabel("G : "));
+        CouleurG = new JTextField(5);
+        PanelXY.add(CouleurG);
+        PanelXY.add(new JLabel("B : "));
+        CouleurB = new JTextField(5);
+        PanelXY.add(CouleurB);
         ChoixCoordonnees.add(PanelXY, BorderLayout.WEST);
         JButton boutonAdd = new JButton("add");
         PanelXY.add(boutonAdd);
@@ -94,13 +103,26 @@ public class Vue extends JPanel implements AutreEventListener {
                     int valx2 = Integer.parseInt(x2.getText().trim());
                     int valy2 = Integer.parseInt(y2.getText().trim());
                     int valEpaisseur = 1;
-                    String valCouleur = "Noir";
-                    if (Epaisseur.getText() == "") {
+                    int valCouleurR = 0;
+                    int valCouleurG = 0;
+                    int valCouleurB = 0;                  
+                    if (Epaisseur.getText() != "") {
                         valEpaisseur = Integer.parseInt(Epaisseur.getText().trim());
                     }
-                    if (Couleur.getText() == "") {
-                        valCouleur = String.valueOf(Couleur.getText());
+                    if (CouleurR.getText() != "") {
+                        valCouleurR = Integer.parseInt(CouleurR.getText().trim());
                     }
+                    if (CouleurG.getText() != "") {
+                        valCouleurG = Integer.parseInt(CouleurG.getText().trim());
+                    }
+
+                    if (CouleurB.getText() != "") {
+                        valCouleurB = Integer.parseInt(CouleurB.getText().trim());
+                    }
+                    
+//                    if (CouleurR.getText() == "") {
+//                        valCouleur = String.valueOf(CouleurR.getText());
+//                    }
                     System.out.println("vue add");
                     Paire x1y1 = new Paire(valx1, valy1);
                     Paire x2y2 = new Paire(valx2, valy2);
@@ -114,7 +136,10 @@ public class Vue extends JPanel implements AutreEventListener {
                     listePoints.add(x1y1);
                     listePoints.add(x2y2);
                     listePoints.add(valEpaisseur);
-                    listePoints.add(valCouleur);
+                    listePoints.add(valCouleurR);
+                    listePoints.add(valCouleurG);
+                    listePoints.add(valCouleurB);
+                    
                     nbEltListe++;
                     notifieur.diffuserAutreEvent(new AutreEvent(this, listePoints));
                 } else {
@@ -130,46 +155,59 @@ public class Vue extends JPanel implements AutreEventListener {
                 x2.setText(" ");
                 y2.setText(" ");
                 Epaisseur.setText(" ");
-                Couleur.setText(" ");
+                CouleurR.setText(" ");
+                CouleurG.setText(" ");
+                CouleurB.setText(" ");
             }
-        });
+        }
+        );
         // Panel pour delete
         JPanel PanelDelete = new JPanel();
         choixPoints = new JList<String>();
         Delete = new JTextField("N° forme à supprimer");
+
         PanelDelete.add(Delete);
         JButton boutonDelete = new JButton("del");
+
         PanelDelete.add(boutonDelete);
+
         ChoixCoordonnees.add(PanelDelete, BorderLayout.SOUTH);
-        boutonDelete.addActionListener((ActionEvent ae2) -> {
-            try {
-                // Si l'utilisateur appuie sur "dell"
-                if (Delete.getText() != null) {
-                    int valDelete = Integer.parseInt(Delete.getText().trim());
-                    System.out.println("vue delete");
-                    notifieur.diffuserAutreEvent(new AutreEvent(this, valDelete));
-                } else {
-                    throw new Exception("Aucune forme définie pour la suppression");
+
+        boutonDelete.addActionListener(
+                (ActionEvent ae2) -> {
+                    try {
+                        // Si l'utilisateur appuie sur "dell"
+                        if (Delete.getText() != null) {
+                            int valDelete = Integer.parseInt(Delete.getText().trim());
+                            System.out.println("vue delete");
+                            notifieur.diffuserAutreEvent(new AutreEvent(this, valDelete));
+                        } else {
+                            throw new Exception("Aucune forme définie pour la suppression");
+                        }
+                    } catch (NumberFormatException nfe) {
+                        System.err.println(nfe.getMessage());
+                        System.out.println("Dans delete");
+                    } catch (Exception e) {
+                        System.err.println(e.getMessage());
+                        System.out.println("Dans delete");
+                    } finally {
+                        Delete.setText("          ");
+                    }
                 }
-            } catch (NumberFormatException nfe) {
-                System.err.println(nfe.getMessage());
-                System.out.println("Dans delete");
-            } catch (Exception e) {
-                System.err.println(e.getMessage());
-                System.out.println("Dans delete");
-            } finally {
-                Delete.setText("          ");
-            }
-        });
+        );
 
         // Panel de la description visuelle (panel à droite de la frame)
         JPanel ZoneTextuelle = new JPanel();
+
         ZoneTextuelle.setBorder(BorderFactory.createTitledBorder("Zone textuelle"));
+
         this.add(ZoneTextuelle, BorderLayout.EAST);
         AfficheTexte = new JTextPane();
+
         ZoneTextuelle.add(AfficheTexte);
 
-        ZoneTextuelle.setPreferredSize(new Dimension(200, 100));
+        ZoneTextuelle.setPreferredSize(
+                new Dimension(200, 100));
         AfficheTexte.setSize(ZoneTextuelle.getPreferredSize());
 
 //        ligneBrisee = new JToggleButton("Ligne Brisée");
@@ -206,7 +244,7 @@ public class Vue extends JPanel implements AutreEventListener {
                     FormeActuel = ListeForme.get(i);
                     System.out.println(FormeActuel.getType());
                     System.out.println(FormeActuel.getList());
-                    listePoints = FormeActuel.getList();
+                    listePoints = FormeActuel.getList();                    
                     if (FormeActuel.getType() == "Rectangle") {
 
                         Paire Paire1 = listePoints.get(0);
@@ -215,11 +253,11 @@ public class Vue extends JPanel implements AutreEventListener {
                         Point point2 = new Point((int) Paire1.getPremier(), (int) Paire1.getSecond());
                         Rectangle rect = new Rectangle(point1);
                         rect.add(point2);
-
+                        g.setColor(FormeActuel.getColor());
                         g.drawRect(rect.x, rect.y, rect.width, rect.height);
                     } else {
                         int nombrePoint = listePoints.size();
-                        if (nombrePoint > 1) {
+                        if (nombrePoint > 0) {
                             pointActuel = listePoints.get(0);
                             for (int j = 1; j < nombre; j++) {
                                 pointSuivant = listePoints.get(j);

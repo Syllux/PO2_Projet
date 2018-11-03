@@ -6,6 +6,7 @@
 package projet_po2;
 
 
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -30,7 +31,11 @@ public class controleurForme implements  AutreEventListener {
               else if (listePoints.get(0).equals("Ligne Brisée"))
                   nomForme = "Ligne Brisée";
               System.out.println(nomForme);
-              Forme nouvelleForme = new Forme(listePoints,nomForme);
+//              System.out.println(listePoints.get(4));
+//              System.out.println(listePoints.get(5));
+//              System.out.println(listePoints.get(6));             
+              Color couleurForme= new Color ((int)listePoints.get(4),(int)listePoints.get(5),(int)listePoints.get(6));
+              Forme nouvelleForme = new Forme(listePoints,nomForme,couleurForme);
               modele.addForme(nouvelleForme);
           } else if (event.getDonnee() instanceof Integer) {   
               System.out.println("actionADeclancher del"); 
