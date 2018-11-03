@@ -15,8 +15,7 @@ import java.util.List;
 
 public class controleurForme implements AutreEventListener {
 
-    private modeleForme modele;
-    private Color couleurForme;
+    private modeleForme modele;   
     public controleurForme(modeleForme modele) {
         this.modele = modele;
     }
@@ -24,6 +23,7 @@ public class controleurForme implements AutreEventListener {
     public void actionADeclancher(AutreEvent event) {
         
         if (event.getDonnee() instanceof ArrayList) {
+            Color couleurForme = new Color(0,0,0);
             System.out.println("actionADeclancher add");
             List listePoints = new ArrayList<>((ArrayList) event.getDonnee());
             String nomForme = new String();
@@ -38,7 +38,7 @@ public class controleurForme implements AutreEventListener {
                     }
                     System.out.println(nomForme);
                 } else if (listePoints.get(i) instanceof Color) {
-                    this.couleurForme = (Color) listePoints.get(i);
+                    couleurForme = (Color) listePoints.get(i);
                 }
             }
             // On vérifie quelle forme a été choisie avant la création de la forme

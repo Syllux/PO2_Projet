@@ -1,5 +1,6 @@
 package projet_po2;
 
+import java.awt.BasicStroke;
 import java.awt.BorderLayout;
 import static java.awt.Color.black;
 import java.awt.Dimension;
@@ -130,7 +131,9 @@ public class Vue extends JPanel implements AutreEventListener {
 
                     //Récupère le nom de la forme selectionnee
                     if (rectangle.getSelectedObjects() != null) {
-                        listePoints.add(rectangle.getActionCommand());
+                        // On clear la liste en cas de création d'un rectangle pour éviter de se retrouver avec plus que 2 points
+                        listePoints.clear();
+                        listePoints.add(rectangle.getActionCommand());                       
                     } else {
                         listePoints.add(ligneBrisee.getActionCommand());
                     }
@@ -151,41 +154,45 @@ public class Vue extends JPanel implements AutreEventListener {
             } catch (Exception e) {
                 System.err.println(e.getMessage());
             } finally {
-                x1.setText(" ");
-                y1.setText(" ");
-                x2.setText(" ");
-                y2.setText(" ");
-                Epaisseur.setText(" ");
-                CouleurR.setText(" ");
-                CouleurG.setText(" ");
-                CouleurB.setText(" ");
+                x1.setText("");
+                y1.setText("");
+                x2.setText("");
+                y2.setText("");
+                Epaisseur.setText("");
+                CouleurR.setText("0");
+                CouleurG.setText("0");
+                CouleurB.setText("0");
                 listePoints.clear();
             }
         }
         );
-
+        
+        // Ce bouton est à utilisé avant de add une ligne brisée afin de créer des lignes plus grande.
         JButton boutonAddLigneBrisee = new JButton("Add Ligne");
         PanelXY.add(boutonAddLigneBrisee);
         boutonAddLigneBrisee.addActionListener((ActionEvent ae) -> {
             try {
+                System.out.println("vue add Ligne");
                 int valx1 = Integer.parseInt(x1.getText().trim());
                 int valy1 = Integer.parseInt(y1.getText().trim());
-                int valx2 = Integer.parseInt(x2.getText().trim());
-                int valy2 = Integer.parseInt(y2.getText().trim());
-                System.out.println("vue add Ligne");
                 Paire x1y1 = new Paire(valx1, valy1);
-                Paire x2y2 = new Paire(valx2, valy2);
                 listePoints.add(x1y1);
-                listePoints.add(x2y2);
+                if (!"".equals(x2.getText()) & !"".equals(y2.getText())){
+                    int valx2 = Integer.parseInt(x2.getText().trim());
+                    int valy2 = Integer.parseInt(y2.getText().trim());
+                    Paire x2y2 = new Paire(valx2, valy2);
+                    listePoints.add(x2y2);
+                }                
+                                                           
             } catch (NumberFormatException nfe) {
                 System.err.println("Veuillez spécifier toutes les coordonnées");
             } catch (Exception e) {
                 System.err.println(e.getMessage());
             } finally {
-                x1.setText(" ");
-                y1.setText(" ");
-                x2.setText(" ");
-                y2.setText(" ");
+                x1.setText("");
+                y1.setText("");
+                x2.setText("");
+                y2.setText("");
             }
         }
         );
@@ -263,6 +270,7 @@ public class Vue extends JPanel implements AutreEventListener {
             System.out.println("paint");
             super.paintComponent(g);
             int nombre = ListeForme.size();
+            
             if (nombre > 0) {
                 Forme FormeActuel = new Forme();
                 Paire<Integer> pointActuel;
@@ -274,6 +282,7 @@ public class Vue extends JPanel implements AutreEventListener {
                     System.out.println(FormeActuel.getList());
                     listePoints = FormeActuel.getList();
                     g.setColor(FormeActuel.getColor());
+                    
                     if (FormeActuel.getType() == "Rectangle") {
 
                         Paire Paire1 = listePoints.get(0);
@@ -296,11 +305,8 @@ public class Vue extends JPanel implements AutreEventListener {
                                 pointActuel = pointSuivant;
                             }
                         }
-                    }
-
-//                   
+                    }               
                 }
-
             }
 
         }
