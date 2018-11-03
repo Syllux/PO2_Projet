@@ -244,7 +244,8 @@ public class Vue extends JPanel implements AutreEventListener {
                     FormeActuel = ListeForme.get(i);
                     System.out.println(FormeActuel.getType());
                     System.out.println(FormeActuel.getList());
-                    listePoints = FormeActuel.getList();                    
+                    listePoints = FormeActuel.getList();  
+                    g.setColor(FormeActuel.getColor());
                     if (FormeActuel.getType() == "Rectangle") {
 
                         Paire Paire1 = listePoints.get(0);
@@ -253,13 +254,14 @@ public class Vue extends JPanel implements AutreEventListener {
                         Point point2 = new Point((int) Paire1.getPremier(), (int) Paire1.getSecond());
                         Rectangle rect = new Rectangle(point1);
                         rect.add(point2);
-                        g.setColor(FormeActuel.getColor());
+                        
                         g.drawRect(rect.x, rect.y, rect.width, rect.height);
                     } else {
                         int nombrePoint = listePoints.size();
+                        
                         if (nombrePoint > 0) {
                             pointActuel = listePoints.get(0);
-                            for (int j = 1; j < nombre; j++) {
+                            for (int j = 0; j < nombrePoint; j++) {
                                 pointSuivant = listePoints.get(j);
                                 g.drawLine(pointActuel.getPremier(), pointActuel.getSecond(),
                                         pointSuivant.getPremier(), pointSuivant.getSecond());
