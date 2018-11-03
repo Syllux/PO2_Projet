@@ -26,6 +26,7 @@ public class Vue extends JPanel implements AutreEventListener {
     private ButtonGroup selectionTypeForme;
     private JTextPane AfficheTexte;
     private int nbEltListe = 0;
+    List listePoints = new ArrayList();
 //    private JToggleButton ligneBrisee, rectangle;
 
     public Vue(modeleForme modele, controleurForme controleur) {
@@ -105,7 +106,7 @@ public class Vue extends JPanel implements AutreEventListener {
                     int valEpaisseur = 1;
                     int valCouleurR = 0;
                     int valCouleurG = 0;
-                    int valCouleurB = 0;                  
+                    int valCouleurB = 0;
                     if (Epaisseur.getText() != "") {
                         valEpaisseur = Integer.parseInt(Epaisseur.getText().trim());
                     }
@@ -119,27 +120,27 @@ public class Vue extends JPanel implements AutreEventListener {
                     if (CouleurB.getText() != "") {
                         valCouleurB = Integer.parseInt(CouleurB.getText().trim());
                     }
-                    
+
 //                    if (CouleurR.getText() == "") {
 //                        valCouleur = String.valueOf(CouleurR.getText());
 //                    }
                     System.out.println("vue add");
                     Paire x1y1 = new Paire(valx1, valy1);
                     Paire x2y2 = new Paire(valx2, valy2);
-                    List listePoints = new ArrayList();
+
                     //Récupère le nom de la forme selectionnee
                     if (rectangle.getSelectedObjects() != null) {
                         listePoints.add(rectangle.getActionCommand());
                     } else {
                         listePoints.add(ligneBrisee.getActionCommand());
                     }
+                    Color couleurForme = new Color(valCouleurR, valCouleurG, valCouleurB);
+
                     listePoints.add(x1y1);
                     listePoints.add(x2y2);
                     listePoints.add(valEpaisseur);
-                    listePoints.add(valCouleurR);
-                    listePoints.add(valCouleurG);
-                    listePoints.add(valCouleurB);
-                    
+                    listePoints.add(couleurForme);
+
                     nbEltListe++;
                     notifieur.diffuserAutreEvent(new AutreEvent(this, listePoints));
                 } else {
@@ -158,6 +159,33 @@ public class Vue extends JPanel implements AutreEventListener {
                 CouleurR.setText(" ");
                 CouleurG.setText(" ");
                 CouleurB.setText(" ");
+                listePoints.clear();
+            }
+        }
+        );
+
+        JButton boutonAddLigneBrisee = new JButton("Add Ligne");
+        PanelXY.add(boutonAddLigneBrisee);
+        boutonAddLigneBrisee.addActionListener((ActionEvent ae) -> {
+            try {
+                int valx1 = Integer.parseInt(x1.getText().trim());
+                int valy1 = Integer.parseInt(y1.getText().trim());
+                int valx2 = Integer.parseInt(x2.getText().trim());
+                int valy2 = Integer.parseInt(y2.getText().trim());
+                System.out.println("vue add Ligne");
+                Paire x1y1 = new Paire(valx1, valy1);
+                Paire x2y2 = new Paire(valx2, valy2);
+                listePoints.add(x1y1);
+                listePoints.add(x2y2);
+            } catch (NumberFormatException nfe) {
+                System.err.println("Veuillez spécifier toutes les coordonnées");
+            } catch (Exception e) {
+                System.err.println(e.getMessage());
+            } finally {
+                x1.setText(" ");
+                y1.setText(" ");
+                x2.setText(" ");
+                y2.setText(" ");
             }
         }
         );
@@ -244,7 +272,7 @@ public class Vue extends JPanel implements AutreEventListener {
                     FormeActuel = ListeForme.get(i);
                     System.out.println(FormeActuel.getType());
                     System.out.println(FormeActuel.getList());
-                    listePoints = FormeActuel.getList();  
+                    listePoints = FormeActuel.getList();
                     g.setColor(FormeActuel.getColor());
                     if (FormeActuel.getType() == "Rectangle") {
 
@@ -254,11 +282,11 @@ public class Vue extends JPanel implements AutreEventListener {
                         Point point2 = new Point((int) Paire1.getPremier(), (int) Paire1.getSecond());
                         Rectangle rect = new Rectangle(point1);
                         rect.add(point2);
-                        
+
                         g.drawRect(rect.x, rect.y, rect.width, rect.height);
                     } else {
                         int nombrePoint = listePoints.size();
-                        
+
                         if (nombrePoint > 0) {
                             pointActuel = listePoints.get(0);
                             for (int j = 0; j < nombrePoint; j++) {
