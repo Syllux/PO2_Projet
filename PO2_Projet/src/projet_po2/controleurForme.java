@@ -15,20 +15,21 @@ import java.util.List;
 
 public class controleurForme implements AutreEventListener {
 
-    private modeleForme modele;   
+    private modeleForme modele;
+
     public controleurForme(modeleForme modele) {
         this.modele = modele;
     }
 
     public void actionADeclancher(AutreEvent event) {
-        
+
         if (event.getDonnee() instanceof ArrayList) {
-            Color couleurForme = new Color(0,0,0);
+            Color couleurForme = new Color(0, 0, 0);
             System.out.println("Controleur add");
             List listePoints = new ArrayList<>((ArrayList) event.getDonnee());
             String nomForme = new String();
-            Boolean estAddLigneBrisee = false;
-           
+            Boolean ajoutForme = true;
+
             int nombre = listePoints.size();
             for (int i = 0; i < nombre; i++) {
                 if (listePoints.get(0) instanceof String) {
@@ -36,26 +37,24 @@ public class controleurForme implements AutreEventListener {
                         nomForme = "Rectangle";
                     } else if (listePoints.get(0).equals("Ligne Brisée")) {
                         nomForme = "Ligne Brisée";
-                    }
-                      else if (listePoints.get(0).equals("Add Ligne")) {
+                    } else if (listePoints.get(0).equals("Add Ligne")) {
                         System.out.println("MOdif");
                         System.out.println(listePoints.get(2));
-                        modele.ajoutCordoonneeForme((Integer)listePoints.get(1), (Paire)listePoints.get(2));
+                        modele.ajoutCordoonneeForme((Integer) listePoints.get(1), (Paire) listePoints.get(2));
                         i = nombre;
-                        estAddLigneBrisee = true;
-                    }            
-                } 
+                        ajoutForme = false;
+                    } else if (listePoints.get(0).equals("Swap")){
+                        System.out.println("Swap controleur");
+                        modele.swapForme((int) listePoints.get(1), (int) listePoints.get(2));
+                        ajoutForme = false;
+                    }
+                }
                 if (listePoints.get(i) instanceof Color) {
                     couleurForme = (Color) listePoints.get(i);
                 }
             }
             // On vérifie quelle forme a été choisie avant la création de la forme
-
-//              System.out.println(listePoints.get(4));
-//              System.out.println(listePoints.get(5));
-//              System.out.println(listePoints.get(6));             
-            //Color couleurForme= new Color ((int)listePoints.get(1),(int)listePoints.get(2),(int)listePoints.get(3));
-            if (estAddLigneBrisee == false) {
+            if (ajoutForme == true) {
                 Forme nouvelleForme = new Forme(listePoints, nomForme, couleurForme);
                 modele.addForme(nouvelleForme);
             }

@@ -21,7 +21,7 @@ public class Vue extends JPanel implements AutreEventListener {
     private controleurForme controleur;
     private AutreEventNotifieur notifieur = new AutreEventNotifieur();
     private JList<String> choixPoints;
-    private JTextField x1, y1, x2, y2, Epaisseur, CouleurR, CouleurG, CouleurB, Delete;
+    private JTextField x1, y1, x2, y2, Epaisseur, CouleurR, CouleurG, CouleurB, Delete, Swap1, Swap2;
     private Dessin zoneDessin;
     private JRadioButton ligneBrisee, rectangle;
     private ButtonGroup selectionTypeForme;
@@ -109,17 +109,17 @@ public class Vue extends JPanel implements AutreEventListener {
                     int valCouleurR = 0;
                     int valCouleurG = 0;
                     int valCouleurB = 0;
-                    if (Epaisseur.getText() != "") {
+                    if (!"".equals(Epaisseur.getText())) {
                         valEpaisseur = Integer.parseInt(Epaisseur.getText().trim());
                     }
-                    if (CouleurR.getText() != "") {
+                    if (!"".equals(CouleurR.getText())) {
                         valCouleurR = Integer.parseInt(CouleurR.getText().trim());
                     }
-                    if (CouleurG.getText() != "") {
+                    if (!"".equals(CouleurG.getText())) {
                         valCouleurG = Integer.parseInt(CouleurG.getText().trim());
                     }
 
-                    if (CouleurB.getText() != "") {
+                    if (!"".equals(CouleurB.getText())) {
                         valCouleurB = Integer.parseInt(CouleurB.getText().trim());
                     }
 
@@ -134,7 +134,7 @@ public class Vue extends JPanel implements AutreEventListener {
                     if (rectangle.getSelectedObjects() != null) {
                         // On clear la liste en cas de création d'un rectangle pour éviter de se retrouver avec plus que 2 points
                         listePoints.clear();
-                        listePoints.add(rectangle.getActionCommand());                       
+                        listePoints.add(rectangle.getActionCommand());
                     } else {
                         listePoints.add(ligneBrisee.getActionCommand());
                     }
@@ -167,7 +167,7 @@ public class Vue extends JPanel implements AutreEventListener {
             }
         }
         );
-        
+
         // Ce bouton est à utilisé avant de add une ligne brisée afin de créer des lignes plus grande.
         JTextField addLigne = new JTextField(5);
         PanelXY.add(addLigne);
@@ -184,13 +184,13 @@ public class Vue extends JPanel implements AutreEventListener {
                 listePoints.add(valposition);
                 listePoints.add(x1y1);
                 System.out.println(listePoints.size());
-                if (!"".equals(x2.getText()) & !"".equals(y2.getText())){
+                if (!"".equals(x2.getText()) & !"".equals(y2.getText())) {
                     throw new Exception("Vous ne pouvez ajouter qu'une coordonnée à la fois ");
-                }     
+                }
                 estAddLigneBrisee = true;
                 notifieur.diffuserAutreEvent(new AutreEvent(this, listePoints));
                 listePoints.clear();
-                                                           
+
             } catch (NumberFormatException nfe) {
                 System.err.println("Veuillez spécifier au moins une coordonnée");
             } catch (Exception e) {
@@ -213,6 +213,13 @@ public class Vue extends JPanel implements AutreEventListener {
 
         PanelDelete.add(boutonDelete);
 
+        Swap1 = new JTextField(3);
+        Swap2 = new JTextField(3);
+        JButton boutonSwap = new JButton("Swap");
+        PanelDelete.add(Swap1);
+        PanelDelete.add(Swap2);
+        PanelDelete.add(boutonSwap);
+
         ChoixCoordonnees.add(PanelDelete, BorderLayout.SOUTH);
 
         boutonDelete.addActionListener(
@@ -234,6 +241,30 @@ public class Vue extends JPanel implements AutreEventListener {
                         System.out.println("Dans delete");
                     } finally {
                         Delete.setText("          ");
+                    }
+                }
+        );
+
+        boutonSwap.addActionListener(
+                (ActionEvent ae2) -> {
+                    try {
+                        listePoints.add(boutonSwap.getActionCommand());
+                        System.out.println(listePoints.get(0));
+                        int valswap1 = Integer.parseInt(Swap1.getText().trim());
+                        int valswap2 = Integer.parseInt(Swap2.getText().trim());
+                        listePoints.add(valswap1);
+                        listePoints.add(valswap2);
+                        notifieur.diffuserAutreEvent(new AutreEvent(this, listePoints));
+                        listePoints.clear();
+                    } catch (NumberFormatException nfe) {
+                        System.err.println(nfe.getMessage());
+                        System.out.println("error swap");
+                    } catch (Exception e) {
+                        System.err.println(e.getMessage());
+                        System.out.println("error swap");
+                    } finally {
+                        Swap1.setText("");
+                        Swap2.setText("");
                     }
                 }
         );
@@ -277,7 +308,7 @@ public class Vue extends JPanel implements AutreEventListener {
             System.out.println("paint");
             super.paintComponent(g);
             int nombre = ListeForme.size();
-            
+
             if (nombre > 0) {
                 Forme FormeActuel = new Forme();
                 Paire<Integer> pointActuel;
@@ -289,7 +320,7 @@ public class Vue extends JPanel implements AutreEventListener {
                     System.out.println(FormeActuel.getList());
                     listePoints = FormeActuel.getList();
                     g.setColor(FormeActuel.getColor());
-                    
+
                     if (FormeActuel.getType() == "Rectangle") {
 
                         Paire Paire1 = listePoints.get(0);
@@ -312,7 +343,7 @@ public class Vue extends JPanel implements AutreEventListener {
                                 pointActuel = pointSuivant;
                             }
                         }
-                    }               
+                    }
                 }
             }
 
