@@ -44,7 +44,8 @@ public class controleurForme implements AutreEventListener {
                         i = nombre;
                         estAddLigneBrisee = true;
                     }            
-                } else if (listePoints.get(i) instanceof Color) {
+                } 
+                if (listePoints.get(i) instanceof Color) {
                     couleurForme = (Color) listePoints.get(i);
                 }
             }
