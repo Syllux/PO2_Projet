@@ -37,10 +37,12 @@ public class controleurForme implements AutreEventListener {
                         nomForme = "Rectangle";
                     } else if (listePoints.get(0).equals("Ligne Brisée")) {
                         nomForme = "Ligne Brisée";
-                    } else if (listePoints.get(0).equals("Add Ligne")) {
-                        System.out.println("MOdif");
-                        System.out.println(listePoints.get(2));
-                        modele.ajoutCordoonneeForme((Integer) listePoints.get(1), (Paire) listePoints.get(2));
+
+                    }
+                      else if (listePoints.get(0).equals("Add Ligne")) {
+                        System.out.println("Modif");
+                        modele.ajoutCordoonneeForme((Integer)listePoints.get(1), (Paire)listePoints.get(2));
+
                         i = nombre;
                         ajoutForme = false;
                     } else if (listePoints.get(0).equals("Swap")){
