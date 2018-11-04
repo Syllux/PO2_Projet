@@ -247,6 +247,7 @@ public class Vue extends JPanel implements AutreEventListener {
         AfficheTexte = new JTextPane();
 
         ZoneTextuelle.add(AfficheTexte);
+        AfficheTexte.setAutoscrolls(true);
 
         ZoneTextuelle.setPreferredSize(
                 new Dimension(200, 100));
@@ -331,10 +332,8 @@ public class Vue extends JPanel implements AutreEventListener {
     public void actionADeclancher(AutreEvent evt) {
         // Affichage de la nouvelle forme dans la zone textuelle
         if (evt.getSource() instanceof modeleForme && evt.getDonnee() instanceof ArrayList) {
-            System.out.println("Dans action a declencher");
+            System.out.println("Dans action a declencher vue");
             List ListeForme = new ArrayList<>((ArrayList) evt.getDonnee());
-            System.out.println(nbEltListe);
-            System.out.println(ListeForme.size());
             // Si c'est un ajout sur une ligne brisée
             AfficheTexte.setText("                ");
             for (int i = 0; i < ListeForme.size(); i++) {
