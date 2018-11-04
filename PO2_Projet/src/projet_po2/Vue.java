@@ -267,6 +267,7 @@ public class Vue extends JPanel implements AutreEventListener {
         this.add(ZoneTextuelle, BorderLayout.EAST);
         ZoneTextuelle.setPreferredSize(new Dimension(300, 100));
         AfficheTexte.setLineWrap(true);
+        AfficheTexte.setEditable(false);
         ZoneTextuelle.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         
 
