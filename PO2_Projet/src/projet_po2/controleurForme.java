@@ -38,8 +38,7 @@ public class controleurForme implements AutreEventListener {
                         nomForme = "Ligne Brisée";
                     }
                       else if (listePoints.get(0).equals("Add Ligne")) {
-                        System.out.println("MOdif");
-                        System.out.println(listePoints.get(2));
+                        System.out.println("Modif");
                         modele.ajoutCordoonneeForme((Integer)listePoints.get(1), (Paire)listePoints.get(2));
                         i = nombre;
                         estAddLigneBrisee = true;

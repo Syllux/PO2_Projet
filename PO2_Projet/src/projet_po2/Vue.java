@@ -168,7 +168,7 @@ public class Vue extends JPanel implements AutreEventListener {
         }
         );
         
-        // Ce bouton est à utilisé avant de add une ligne brisée afin de créer des lignes plus grande.
+        // Ce bouton est à utilisé pour ajouter une ligne à une ligne brisée selectionnée
         JTextField addLigne = new JTextField(5);
         PanelXY.add(addLigne);
         JButton boutonAddLigneBrisee = new JButton("Add Ligne");
@@ -189,7 +189,6 @@ public class Vue extends JPanel implements AutreEventListener {
                 }     
                 estAddLigneBrisee = true;
                 notifieur.diffuserAutreEvent(new AutreEvent(this, listePoints));
-                listePoints.clear();
                                                            
             } catch (NumberFormatException nfe) {
                 System.err.println("Veuillez spécifier au moins une coordonnée");
@@ -200,6 +199,7 @@ public class Vue extends JPanel implements AutreEventListener {
                 y1.setText("");
                 x2.setText("");
                 y2.setText("");
+                listePoints.clear();
             }
         }
         );
@@ -336,34 +336,14 @@ public class Vue extends JPanel implements AutreEventListener {
             System.out.println(nbEltListe);
             System.out.println(ListeForme.size());
             // Si c'est un ajout sur une ligne brisée
-            if (estAddLigneBrisee == true) {
-                AfficheTexte.setText("                ");
-                for (int i = 1; i < ListeForme.size(); i++) {
-                    AfficheTexte.setText(i + " -> " + ListeForme.get(i) + "\n" + AfficheTexte.getText());
-                }
-                estAddLigneBrisee = false;
+            AfficheTexte.setText("                ");
+            for (int i = 0; i < ListeForme.size(); i++) {
+                AfficheTexte.setText(i + " -> " + ListeForme.get(i) + "\n" + AfficheTexte.getText());
             }
-            // Si on ajoute une forme, on l'affiche dans la zone textuelle
-            if (ListeForme.size() == nbEltListe) {
-                AfficheTexte.setText(ListeForme.size() - 1 + " -> " + ListeForme.get(ListeForme.size() - 1) + "\n" + AfficheTexte.getText());
-            } // Sinon on la supprime de la zone textuelle
-            else if (ListeForme.size() != nbEltListe) {
-                if (ListeForme.size() == 0) {
-                    AfficheTexte.setText("            ");
-                } else {
-                    AfficheTexte.setText("0 -> " + ListeForme.get(0) + "\n");
-                }
-                for (int i = 1; i < ListeForme.size(); i++) {
-                    AfficheTexte.setText(i + " -> " + ListeForme.get(i) + "\n" + AfficheTexte.getText());
-                }
-
-                nbEltListe--;
-
-            }
-
             zoneDessin.setListeForme(ListeForme);
             zoneDessin.repaint();
-        } else {
+        } 
+        else {
             throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         }
 
