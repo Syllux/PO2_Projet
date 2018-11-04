@@ -267,15 +267,6 @@ public class Vue extends JPanel implements AutreEventListener {
         AfficheTexte.setLineWrap(true);
         AfficheTexte.setEditable(false);
         ZoneTextuelle.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-        
-
-
-//        ligneBrisee = new JToggleButton("Ligne Brisée");
-//        boite.add(ligneBrisee);
-//        boite = new Box(BoxLayout.X_AXIS);
-//        boiteGauche.add(boite);
-//        rectangle = new JToggleButton("Rectangle");
-//        boite.add(rectangle);
     }
 
     public class Dessin extends JPanel {
@@ -352,7 +343,7 @@ public class Vue extends JPanel implements AutreEventListener {
             System.out.println("Dans action a declencher vue");
             List ListeForme = new ArrayList<>((ArrayList) evt.getDonnee());
             // Si c'est un ajout sur une ligne brisée
-            AfficheTexte.setText("                ");
+            AfficheTexte.setText("");
             for (int i = 0; i < ListeForme.size(); i++) {
                 AfficheTexte.setText(i + " -> " + ListeForme.get(i) + "\n" + AfficheTexte.getText());
             }
