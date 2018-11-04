@@ -2,10 +2,6 @@
 package projet_po2;
 
 import java.awt.Color;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -62,9 +58,4 @@ public class controleurForme implements AutreEventListener {
             modele.removeForme(pos);
         }
     }
-
-//    @Override
-//    public void actionADeclancher(AutreEvent evt) {
-//        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-//    }
 }

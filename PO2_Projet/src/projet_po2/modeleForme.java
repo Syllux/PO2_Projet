@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import java.util.LinkedList;
-
 public class modeleForme {
 
     private List<Forme> ListForme = new ArrayList<>();
@@ -39,7 +37,6 @@ public class modeleForme {
         }
     }
 
-    // public void setColor();
     public void addAutreEventListener(AutreEventListener listener) {
         notifieur.addAutreEventListener(listener);
     }

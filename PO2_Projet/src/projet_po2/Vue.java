@@ -1,8 +1,6 @@
 package projet_po2;
 
-import java.awt.BasicStroke;
 import java.awt.BorderLayout;
-import static java.awt.Color.black;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Color;
@@ -237,7 +235,7 @@ public class Vue extends JPanel implements AutreEventListener {
         );
 
         boutonSwap.addActionListener(
-                (ActionEvent ae2) -> {
+                (ActionEvent ae3) -> {
                     try {
                         listePoints.add(boutonSwap.getActionCommand());
                         System.out.println(listePoints.get(0));
