@@ -15,17 +15,6 @@ public class modeleForme {
         ListForme.add(forme);
         notifieur.diffuserAutreEvent(new AutreEvent(this, ListForme));
     }
-//	public void addRectangle(Forme forme) {
-//		ListForme.add(forme);                  
-//                System.out.println("modele notifie");
-//		notifieur.diffuserAutreEvent(new AutreEvent(this, ListForme));
-//	}
-//        
-//        public void addLigneBrisee(Forme forme) {
-//		ListForme.add(forme);                  
-//                System.out.println("modele notifie");
-//		notifieur.diffuserAutreEvent(new AutreEvent(this, ListForme));
-//	}
 
     public void swapForme(int forme1, int forme2) {
         Collections.swap(ListForme,forme1,forme2);
