@@ -156,29 +156,29 @@ public class Vue extends JPanel implements AutreEventListener {
         }
         );
 
-        
         // Ce bouton est à utilisé pour ajouter une ligne à une ligne brisée selectionnée
-
         JTextField addLigne = new JTextField(5);
         PanelXY.add(addLigne);
         JButton boutonAddLigneBrisee = new JButton("Add Ligne");
         PanelXY.add(boutonAddLigneBrisee);
         boutonAddLigneBrisee.addActionListener((ActionEvent ae) -> {
             try {
-                System.out.println("vue add Ligne");
-                listePoints.add(boutonAddLigneBrisee.getActionCommand());
-                int valposition = Integer.parseInt(addLigne.getText().trim());
-                int valx1 = Integer.parseInt(x1.getText().trim());
-                int valy1 = Integer.parseInt(y1.getText().trim());
-                Paire x1y1 = new Paire(valx1, valy1);
-                listePoints.add(valposition);
-                listePoints.add(x1y1);
-                System.out.println(listePoints.size());
-                if (!"".equals(x2.getText()) & !"".equals(y2.getText())) {
-                    throw new Exception("Vous ne pouvez ajouter qu'une coordonnée à la fois ");
+                if (ligneBrisee.getSelectedObjects() != null) {
+                    System.out.println("vue add Ligne");
+                    listePoints.add(boutonAddLigneBrisee.getActionCommand());
+                    int valposition = Integer.parseInt(addLigne.getText().trim());
+                    int valx1 = Integer.parseInt(x1.getText().trim());
+                    int valy1 = Integer.parseInt(y1.getText().trim());
+                    Paire x1y1 = new Paire(valx1, valy1);
+                    listePoints.add(valposition);
+                    listePoints.add(x1y1);
+                    System.out.println(listePoints.size());
+                    if (!"".equals(x2.getText()) & !"".equals(y2.getText())) {
+                        throw new Exception("Vous ne pouvez ajouter qu'une coordonnée à la fois ");
+                    }
+                    estAddLigneBrisee = true;
+                    notifieur.diffuserAutreEvent(new AutreEvent(this, listePoints));
                 }
-                estAddLigneBrisee = true;
-                notifieur.diffuserAutreEvent(new AutreEvent(this, listePoints));
 
             } catch (NumberFormatException nfe) {
                 System.err.println("Erreur : n° forme non selectionnée ou coordonnée manquante");
@@ -349,8 +349,7 @@ public class Vue extends JPanel implements AutreEventListener {
             }
             zoneDessin.setListeForme(ListeForme);
             zoneDessin.repaint();
-        } 
-        else {
+        } else {
             throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         }
 
