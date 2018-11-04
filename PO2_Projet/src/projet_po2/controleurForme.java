@@ -24,19 +24,26 @@ public class controleurForme implements AutreEventListener {
         
         if (event.getDonnee() instanceof ArrayList) {
             Color couleurForme = new Color(0,0,0);
-            System.out.println("actionADeclancher add");
+            System.out.println("Controleur add");
             List listePoints = new ArrayList<>((ArrayList) event.getDonnee());
             String nomForme = new String();
+            Boolean estAddLigneBrisee = false;
            
             int nombre = listePoints.size();
             for (int i = 0; i < nombre; i++) {
-                if (listePoints.get(i) instanceof String) {
-                    if (listePoints.get(i).equals("Rectangle")) {
+                if (listePoints.get(0) instanceof String) {
+                    if (listePoints.get(0).equals("Rectangle")) {
                         nomForme = "Rectangle";
-                    } else if (listePoints.get(i).equals("Ligne Brisée")) {
+                    } else if (listePoints.get(0).equals("Ligne Brisée")) {
                         nomForme = "Ligne Brisée";
                     }
-                    System.out.println(nomForme);
+                      else if (listePoints.get(0).equals("Add Ligne")) {
+                        System.out.println("MOdif");
+                        System.out.println(listePoints.get(2));
+                        modele.ajoutCordoonneeForme((Integer)listePoints.get(1), (Paire)listePoints.get(2));
+                        i = nombre;
+                        estAddLigneBrisee = true;
+                    }            
                 } else if (listePoints.get(i) instanceof Color) {
                     couleurForme = (Color) listePoints.get(i);
                 }
@@ -47,11 +54,12 @@ public class controleurForme implements AutreEventListener {
 //              System.out.println(listePoints.get(5));
 //              System.out.println(listePoints.get(6));             
             //Color couleurForme= new Color ((int)listePoints.get(1),(int)listePoints.get(2),(int)listePoints.get(3));
-            
-            Forme nouvelleForme = new Forme(listePoints, nomForme, couleurForme);
-            modele.addForme(nouvelleForme);
+            if (estAddLigneBrisee == false) {
+                Forme nouvelleForme = new Forme(listePoints, nomForme, couleurForme);
+                modele.addForme(nouvelleForme);
+            }
         } else if (event.getDonnee() instanceof Integer) {
-            System.out.println("actionADeclancher del");
+            System.out.println("Controleur del");
             int pos = (Integer) event.getDonnee();
             modele.removeForme(pos);
         }

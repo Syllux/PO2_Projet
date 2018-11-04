@@ -55,4 +55,9 @@ public class Forme {
     public List<Paire<Integer>> getList() {
         return this.listePoints;
     }
+    
+    // Ajout de coordonnée à la forme
+    public void addList(Paire<Integer> ajoutListe) {
+        this.listePoints.add(ajoutListe);
+    }
 }

@@ -27,6 +27,7 @@ public class Vue extends JPanel implements AutreEventListener {
     private ButtonGroup selectionTypeForme;
     private JTextPane AfficheTexte;
     private int nbEltListe = 0;
+    private Boolean estAddLigneBrisee = false;
     List listePoints = new ArrayList();
 //    private JToggleButton ligneBrisee, rectangle;
 
@@ -168,24 +169,30 @@ public class Vue extends JPanel implements AutreEventListener {
         );
         
         // Ce bouton est à utilisé avant de add une ligne brisée afin de créer des lignes plus grande.
+        JTextField addLigne = new JTextField(5);
+        PanelXY.add(addLigne);
         JButton boutonAddLigneBrisee = new JButton("Add Ligne");
         PanelXY.add(boutonAddLigneBrisee);
         boutonAddLigneBrisee.addActionListener((ActionEvent ae) -> {
             try {
                 System.out.println("vue add Ligne");
+                listePoints.add(boutonAddLigneBrisee.getActionCommand());
+                int valposition = Integer.parseInt(addLigne.getText().trim());
                 int valx1 = Integer.parseInt(x1.getText().trim());
                 int valy1 = Integer.parseInt(y1.getText().trim());
                 Paire x1y1 = new Paire(valx1, valy1);
+                listePoints.add(valposition);
                 listePoints.add(x1y1);
+                System.out.println(listePoints.size());
                 if (!"".equals(x2.getText()) & !"".equals(y2.getText())){
-                    int valx2 = Integer.parseInt(x2.getText().trim());
-                    int valy2 = Integer.parseInt(y2.getText().trim());
-                    Paire x2y2 = new Paire(valx2, valy2);
-                    listePoints.add(x2y2);
-                }                
+                    throw new Exception("Vous ne pouvez ajouter qu'une coordonnée à la fois ");
+                }     
+                estAddLigneBrisee = true;
+                notifieur.diffuserAutreEvent(new AutreEvent(this, listePoints));
+                listePoints.clear();
                                                            
             } catch (NumberFormatException nfe) {
-                System.err.println("Veuillez spécifier toutes les coordonnées");
+                System.err.println("Veuillez spécifier au moins une coordonnée");
             } catch (Exception e) {
                 System.err.println(e.getMessage());
             } finally {
@@ -328,7 +335,14 @@ public class Vue extends JPanel implements AutreEventListener {
             List ListeForme = new ArrayList<>((ArrayList) evt.getDonnee());
             System.out.println(nbEltListe);
             System.out.println(ListeForme.size());
-
+            // Si c'est un ajout sur une ligne brisée
+            if (estAddLigneBrisee == true) {
+                AfficheTexte.setText("                ");
+                for (int i = 1; i < ListeForme.size(); i++) {
+                    AfficheTexte.setText(i + " -> " + ListeForme.get(i) + "\n" + AfficheTexte.getText());
+                }
+                estAddLigneBrisee = false;
+            }
             // Si on ajoute une forme, on l'affiche dans la zone textuelle
             if (ListeForme.size() == nbEltListe) {
                 AfficheTexte.setText(ListeForme.size() - 1 + " -> " + ListeForme.get(ListeForme.size() - 1) + "\n" + AfficheTexte.getText());

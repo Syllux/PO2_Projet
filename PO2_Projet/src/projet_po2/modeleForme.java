@@ -19,9 +19,7 @@ public class modeleForme {
     private AutreEventNotifieur notifieur = new AutreEventNotifieur();
     public void addForme(Forme forme) {
 		ListForme.add(forme);                  
-                System.out.println("modele notifie");
 		notifieur.diffuserAutreEvent(new AutreEvent(this, ListForme));
-                System.out.println(ListForme);
     }
 //	public void addRectangle(Forme forme) {
 //		ListForme.add(forme);                  
@@ -39,11 +37,18 @@ public class modeleForme {
 	public void removeForme(int position) {
 		if ((position >= 0) && (position <= ListForme.size()-1)) {
 			ListForme.remove(position);            
-                        System.out.println("modele remove notifie");
-                        System.out.println(ListForme);
 			notifieur.diffuserAutreEvent(new AutreEvent(this, ListForme));
 		}		
 	}
+        
+        public void ajoutCordoonneeForme(int position, Paire<Integer> ajout) {
+            if ((position >= 0) && (position <= ListForme.size()-1)) {
+                Forme formeModif = ListForme.get(position);
+                formeModif.addList(ajout);
+                ListForme.set(position, formeModif);
+                notifieur.diffuserAutreEvent(new AutreEvent(this, ListForme));
+            }
+        }
         
        // public void setColor();
     
